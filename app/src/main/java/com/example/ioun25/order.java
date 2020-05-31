@@ -76,6 +76,10 @@ public class order extends AppCompatActivity {
 
                             // το χρησιμοποιω για τα είδη παραγγελίας τα οποία τα γεμιζω στο EpiloghEid
     ArrayList<String> KATHG;
+
+    ArrayList<String> QuerSQL;  // quersy gia sqlserver
+
+
     GridView moviesList;
     GridView kathgGrid;
     GridView Paragg;
@@ -996,9 +1000,10 @@ int kn=0;
 
     public void SAVE_ORDER2(View view) {
     // --------------------- ok sql server save ----------------------------------------------
+      String Qall="" ;
 
-      //*  pel.clear();
 
+      /*    TEST SPOSTOLIS SE SQL IS OK!!!!!!!
         Runnable aRunnable = new Runnable() {
             public void run() {
                 execData("insert into PARAGG (TRAPEZI,HME) VALUES ('53',GETDATE())");
@@ -1010,6 +1015,7 @@ int kn=0;
         android.os.SystemClock.sleep(1000);
         // };
         Toast.makeText(getApplicationContext(), "OK ENHMEROTHIKE", Toast.LENGTH_SHORT).show();
+       */
 
 
 
@@ -1026,9 +1032,14 @@ int kn=0;
         // αν ειναι νέα παραγγελία
         // "INSERT INTO PARAGGMASTER (TRAPEZI,HME,IDBARDIA,CH1) VALUES ('" + p_Trapezi + "'," + MDATE + "," + Str(gBardia) + ",'" + Format(Now(), "hh:mm") + "' )"
         if (gYparxoyses ==0) {    //"+idBardia+"
-            Q = "INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'" + tr + "',"+idBardia+",datetime('now','localtime'))";
+            Q = "INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'" + tr + "',"+idBardia;
 
-            mydatabase.execSQL(Q);
+            mydatabase.execSQL(Q+",datetime('now','localtime'));");  // SQLLITE SYNTAX
+            //  Qall=Qall+"INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
+            load3("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ");
+
+
+
 
             Cursor cursor5 = mydatabase.rawQuery("select max(ID) from PARAGGMASTER ", null);
             // long n=0;
@@ -1057,9 +1068,10 @@ Double sum=0.0;
             sum=sum+ parseDouble(EIDH_PARAGG.get(i+1))*parseDouble(EIDH_PARAGG.get(i+2));
 
 
+           // QuerSQL.add(Q) ;
+            load3(Q);
+          //  Qall=Qall+Q;
 
-
-            
 
         }
 
@@ -1116,16 +1128,23 @@ Double sum=0.0;
 
         csum = csum.replace(",", ".");
 
-        mydatabase.execSQL("UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE ID=" + s  );
 
+
+        Q="UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE ID=" + s+";" ;
+        mydatabase.execSQL(Q);
+        Qall=Qall+Q;
         if (gYparxoyses ==0) {    //"+idBardia+"
 
-            mydatabase.execSQL("UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "'");
+            Q="UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
+            mydatabase.execSQL(Q);
+            Qall=Qall+Q;
         }else{
             Double dd=0.0;
             dd=ReadSqln("select AJIA FROM PARAGGMASTER WHERE ID=" + s );
 
-            mydatabase.execSQL("UPDATE TABLES SET CH1='" + dd.toString() + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "'");
+            Q="UPDATE TABLES SET CH1='" + dd.toString() + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
+            mydatabase.execSQL(Q);
+            Qall=Qall+Q;
         }
 
 
@@ -1137,12 +1156,15 @@ Double sum=0.0;
 
         try {
 
-            load3(view);
+
+
+          //  load3(Qall);
             // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+
 
 
 
@@ -1213,7 +1235,7 @@ Double sum=0.0;
 
     */
 
-    public void load3(View view){
+    public void load3(final String Query){
         //=========================================  sql server Update ===============================
 
         Runnable aRunnable = new Runnable() {
@@ -1221,66 +1243,19 @@ Double sum=0.0;
              // TextView textView = findViewById(R.id.textView3);
               //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
               //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
-                execData("insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
+                execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
              //   handler2.sendEmptyMessage(0);
             }
         };
         Thread aThread = new Thread(aRunnable);
         aThread.start();
         //while ( bT.getText().toString()=="*"){
-        android.os.SystemClock.sleep(1000);
+        android.os.SystemClock.sleep(2000);
         // };
         Toast.makeText(getApplicationContext(), "OK ENHMEΡΩΘΗΚΕ", Toast.LENGTH_SHORT).show();
 
         //=========================================  sql server Update ===============================
 
-      /*
-        pel3.clear();
-        Runnable aRunnable = new Runnable() {
-            public void run() {
-                ResultSet rs = getData("SELECT *  FROM EIDH ");
-                try {
-                    while (rs.next()) {
-                        // pel3.add("'"+rs.getString("ONO") + "',"+ Integer.toString(rs.getInt("ID")) );
-
-
-                        String KOD, ONO, CH1, CH2;
-                        int ID, KAT;
-                        double TIMH;
-
-                        KOD = rs.getString("KOD");
-                        ONO = rs.getString("ONO");
-                        // print_text(ONO);
-                        CH1 = rs.getString("CH1");
-                        CH2 = rs.getString("CH2");
-                        ID = rs.getInt("ID");
-                        KAT = rs.getInt("KATHG");
-                        TIMH = rs.getDouble("TIMH");
-                        DecimalFormat decimalFormat = new DecimalFormat("#.00");
-                        String cTIMH = decimalFormat.format(TIMH);
-                        cTIMH = cTIMH.replace(",", ".");
-
-
-                        String Q;
-                        Q = "INSERT INTO EIDH (KOD,ONO,CH1,CH2,ID,KATHG,TIMH) VALUES";
-                        Q =Q+  "('" + KOD + "','" + ONO + "','" + CH1 + "','" + CH2 + "'," + Integer.toString(ID) + "," + Integer.toString(KAT) + "," + cTIMH + ")";
-                        pel3.add(Q);
-
-
-
-                    }
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                    Toast.makeText(getApplicationContext(), "EIDH 2 ΛΑΘΟΣ", Toast.LENGTH_SHORT).show();
-                }
-                handlerEIDH.sendEmptyMessage(0);
-            }
-        };
-        Thread aThread = new Thread(aRunnable);
-        aThread.start();
-        android.os.SystemClock.sleep(1000);// };
-        // Toast.makeText(getApplicationContext(), "EIDH ok", Toast.LENGTH_SHORT).show();
-      */
 
 
 
