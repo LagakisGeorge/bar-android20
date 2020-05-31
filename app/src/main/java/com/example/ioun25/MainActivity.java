@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
     public static int gYparxoyses ;
     public static String idBardia;
     public static String gIPPRINTER,gIPSQL;
+    public static String gUSER="sa",gPASSWORD="12345678";
 
 
     public String arr[][];
@@ -265,6 +266,8 @@ String d=""+c+"t15";
                     "[KOD] [int] ,"+
                     "[ACCESSCODE][nvarchar](155) ,"+
                     "[IPSQL][nvarchar](155) ,"+
+                    "[USER][nvarchar](155) ,"+
+                    "[PASSWORD][nvarchar](155) ,"+
                     "[IPPRINTER] [nvarchar](155)  ); ");
 
             Cursor cursor4 = mydatabase.rawQuery("select IPPRINTER,IPSQL from  MEM WHERE ID=1", null);

@@ -56,6 +56,9 @@ import static android.graphics.Color.BLACK;
 import static android.graphics.Color.GREEN;
 import static android.graphics.Color.RED;
 import static com.example.ioun25.MainActivity.EXTRA_MESSAGE;
+import static com.example.ioun25.MainActivity.gIPSQL;
+import static com.example.ioun25.MainActivity.gPASSWORD;
+import static com.example.ioun25.MainActivity.gUSER;
 import static com.example.ioun25.MainActivity.gYparxoyses;
 import static com.example.ioun25.MainActivity.idBardia;
 import static com.example.ioun25.MainActivity.toGreek;
@@ -77,10 +80,10 @@ public class order extends AppCompatActivity {
     GridView kathgGrid;
     GridView Paragg;
     // private String URL = "jdbc:jtds:sqlserver://192.168.1.5:52735/BAR;instance=SQLEXPRESS;";
-    private String URL = "jdbc:jtds:sqlserver://192.168.1.7:49702/BAR;instance=SQLEXPRESS;";
+    private String URL = "jdbc:jtds:sqlserver://192.168.1.4:51403/BAR;instance=SQL17;";
     private String USER = "sa";
-    //  private String PASS = "12345678";  //"p@ssw0rd";
-    private String PASS = "p@ssw0rd";
+     private String PASS = "12345678";  //"p@ssw0rd";
+    //  private String PASS = "p@ssw0rd";
 
 
     private   Double f_sum=0.0;
@@ -988,16 +991,17 @@ int kn=0;
 
 // σώζει την παραγγελια σε sqlιτε   //server
     public void SAVE_ORDER (View view) {
-        SAVE_ORDER2();
+        SAVE_ORDER2(view);
     }
 
-    public void SAVE_ORDER2() {
+    public void SAVE_ORDER2(View view) {
     // --------------------- ok sql server save ----------------------------------------------
 
-      /*  pel.clear();
+      //*  pel.clear();
+
         Runnable aRunnable = new Runnable() {
             public void run() {
-                execData("insert into PARAGG (TRAPEZI,HME) VALUES (52,GETDATE())");
+                execData("insert into PARAGG (TRAPEZI,HME) VALUES ('53',GETDATE())");
             }
         };
         Thread aThread = new Thread(aRunnable);
@@ -1006,7 +1010,7 @@ int kn=0;
         android.os.SystemClock.sleep(1000);
         // };
         Toast.makeText(getApplicationContext(), "OK ENHMEROTHIKE", Toast.LENGTH_SHORT).show();
-      */
+
 
 
         //-----------------------------------  sql lite save order --------------------------
@@ -1051,6 +1055,12 @@ Double sum=0.0;
     Q=Q+ EIDH_PARAGG.get(i+1)+","+ EIDH_PARAGG.get(i+2)+",'"+ EIDH_PARAGG.get(i+3)+"','"+EIDH_PARAGG.get(i+4)+"',0);";
             mydatabase.execSQL(Q);
             sum=sum+ parseDouble(EIDH_PARAGG.get(i+1))*parseDouble(EIDH_PARAGG.get(i+2));
+
+
+
+
+            
+
         }
 
         try {
@@ -1124,6 +1134,27 @@ Double sum=0.0;
         //-----------------------------------
 
 
+
+        try {
+
+            load3(view);
+            // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
         Intent intent = new Intent(this, trapezia.class);
         // EditText editText = (EditText) findViewById(R.id.editText);
      //   String message2 ="---" ;// EditText.GetText().toString();
@@ -1182,6 +1213,79 @@ Double sum=0.0;
 
     */
 
+    public void load3(View view){
+        //=========================================  sql server Update ===============================
+
+        Runnable aRunnable = new Runnable() {
+            public void run() {
+             // TextView textView = findViewById(R.id.textView3);
+              //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
+              //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
+                execData("insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
+             //   handler2.sendEmptyMessage(0);
+            }
+        };
+        Thread aThread = new Thread(aRunnable);
+        aThread.start();
+        //while ( bT.getText().toString()=="*"){
+        android.os.SystemClock.sleep(1000);
+        // };
+        Toast.makeText(getApplicationContext(), "OK ENHMEΡΩΘΗΚΕ", Toast.LENGTH_SHORT).show();
+
+        //=========================================  sql server Update ===============================
+
+      /*
+        pel3.clear();
+        Runnable aRunnable = new Runnable() {
+            public void run() {
+                ResultSet rs = getData("SELECT *  FROM EIDH ");
+                try {
+                    while (rs.next()) {
+                        // pel3.add("'"+rs.getString("ONO") + "',"+ Integer.toString(rs.getInt("ID")) );
+
+
+                        String KOD, ONO, CH1, CH2;
+                        int ID, KAT;
+                        double TIMH;
+
+                        KOD = rs.getString("KOD");
+                        ONO = rs.getString("ONO");
+                        // print_text(ONO);
+                        CH1 = rs.getString("CH1");
+                        CH2 = rs.getString("CH2");
+                        ID = rs.getInt("ID");
+                        KAT = rs.getInt("KATHG");
+                        TIMH = rs.getDouble("TIMH");
+                        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+                        String cTIMH = decimalFormat.format(TIMH);
+                        cTIMH = cTIMH.replace(",", ".");
+
+
+                        String Q;
+                        Q = "INSERT INTO EIDH (KOD,ONO,CH1,CH2,ID,KATHG,TIMH) VALUES";
+                        Q =Q+  "('" + KOD + "','" + ONO + "','" + CH1 + "','" + CH2 + "'," + Integer.toString(ID) + "," + Integer.toString(KAT) + "," + cTIMH + ")";
+                        pel3.add(Q);
+
+
+
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "EIDH 2 ΛΑΘΟΣ", Toast.LENGTH_SHORT).show();
+                }
+                handlerEIDH.sendEmptyMessage(0);
+            }
+        };
+        Thread aThread = new Thread(aRunnable);
+        aThread.start();
+        android.os.SystemClock.sleep(1000);// };
+        // Toast.makeText(getApplicationContext(), "EIDH ok", Toast.LENGTH_SHORT).show();
+      */
+
+
+
+    }
+
     public void kentriko (View view){
         Intent intent = new Intent(this, trapezia.class);
         String message2 ="---" ;// EditText.GetText().toString();
@@ -1189,7 +1293,7 @@ Double sum=0.0;
     }
 
 public void print_logar(View view){
-    SAVE_ORDER2();
+    SAVE_ORDER2(view);
 Double sum=0.0;
     TextView textView = findViewById(R.id.textView3);
     String tr=textView.getText().toString(); // αριθμος τραπεζιού

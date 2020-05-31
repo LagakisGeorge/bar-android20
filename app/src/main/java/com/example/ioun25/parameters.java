@@ -370,7 +370,7 @@ Show();
 
             TextView tvKathg = (TextView) convertView.findViewById(R.id.tvSxolia);
             tvKathg.setText(entry.getKathg());
-
+            tvKathg.setTextColor(Color.GREEN);
 
           //  nPointer=entry.getPointer();
 
