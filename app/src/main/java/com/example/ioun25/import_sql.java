@@ -63,7 +63,7 @@ public class import_sql extends AppCompatActivity {
 
 
 
-
+// 4444444444444444444444444444444444444444444444
         handlerTRAPEZIA = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -73,6 +73,10 @@ public class import_sql extends AppCompatActivity {
             }
         });
 
+
+
+
+        //  33333333333333333333333333333333333333
         handler2 = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -83,6 +87,8 @@ public class import_sql extends AppCompatActivity {
             }
         });
 
+
+        /// 222222222222222222222222222222222222222222222222222222222222222222
         handlerXAR1 = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
@@ -93,12 +99,12 @@ public class import_sql extends AppCompatActivity {
             }
         });
 
-
+        // 11111111111111111111111111111111111111111111111111111111111111111111
         handlerEIDH = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
                // View view=new View();
-                Array3_EIDHToSQLite();
+                Array3_EIDHToSQLite();  //σβηνει τα ειδη sqllite
                 Toast.makeText(getApplicationContext(), "ok διαβαστηκε", Toast.LENGTH_SHORT).show();
                 LoadXar1SQLSERVER();
                 return true;

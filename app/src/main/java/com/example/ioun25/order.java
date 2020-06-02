@@ -66,7 +66,7 @@ import static java.lang.Double.parseDouble;
 import static java.util.jar.Pack200.Packer.PASS;
 
 public class order extends AppCompatActivity {
-
+    String Qall="" ;
 
     TextView total_price; // μερικο συνολο
     ArrayList<String> pel;
@@ -243,9 +243,56 @@ separated[1]; // this will contain " they taste good"
               //  for (int i = 0; i < pel.size(); i++) {
                 //    System.out.println("πελατης"+pel.get(i));
               //  }
+
+
+            //    try {
+
+          //      Toast.makeText(getApplicationContext(), "ok διαβαστηκε", Toast.LENGTH_SHORT).show();
+
+                //   load4(Qall);
+                    // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
+
+             //   } catch (Exception ex) {
+            //        ex.printStackTrace();
+             //   }
+
+
+
+
+
+
+
+
                 return true;
             }
         });
+
+
+
+        /*   / 11111111111111111111111111111111111111111111111111111111111111111111
+        handlerEIDH = new Handler(new Handler.Callback() {
+            @Override
+            public boolean handleMessage(Message msg) {
+                // View view=new View();
+                Array3_EIDHToSQLite();  //σβηνει τα ειδη sqllite
+                Toast.makeText(getApplicationContext(), "ok διαβαστηκε", Toast.LENGTH_SHORT).show();
+                LoadXar1SQLSERVER();
+                return true;
+            }
+        });
+
+        */
+
+
+
+
+
+
+
+
+
+
+
 
 
         // δειχνει τα ειδη σε αλλο intent για να διαλεξω
@@ -1000,8 +1047,8 @@ int kn=0;
 
     public void SAVE_ORDER2(View view) {
     // --------------------- ok sql server save ----------------------------------------------
-      String Qall="" ;
-
+     // String Qall="" ;
+        Qall="";
 
       /*    TEST SPOSTOLIS SE SQL IS OK!!!!!!!
         Runnable aRunnable = new Runnable() {
@@ -1029,6 +1076,7 @@ int kn=0;
 
         String s = "0";  // αριθμος παργγελιας
         String Q;
+        String Qmast="";
         // αν ειναι νέα παραγγελία
         // "INSERT INTO PARAGGMASTER (TRAPEZI,HME,IDBARDIA,CH1) VALUES ('" + p_Trapezi + "'," + MDATE + "," + Str(gBardia) + ",'" + Format(Now(), "hh:mm") + "' )"
         if (gYparxoyses ==0) {    //"+idBardia+"
@@ -1036,7 +1084,6 @@ int kn=0;
 
             mydatabase.execSQL(Q+",datetime('now','localtime'));");  // SQLLITE SYNTAX
             //  Qall=Qall+"INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
-            load3("INSERT INTO PARAGGMASTER (NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ");
 
 
 
@@ -1057,6 +1104,17 @@ int kn=0;
         }
 
 
+
+Qmast="INSERT INTO PARAGGMASTER (TABLETN,IDPARAGG,NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (1,"+s+",0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
+      //  Qall=Qall+Q;
+
+      //  load3(Q);
+
+
+
+
+
+
 Double sum=0.0;
 
         for(int i = gYparxoyses; i<EIDH_PARAGG.size();i=i+5)//
@@ -1069,8 +1127,8 @@ Double sum=0.0;
 
 
            // QuerSQL.add(Q) ;
-            load3(Q);
-          //  Qall=Qall+Q;
+           // load3(Q);
+            Qall=Qall+Q;
 
 
         }
@@ -1102,6 +1160,9 @@ Double sum=0.0;
                 // oStream.println("λσαδσξδΞΣΔΞΑΔΞΕΙΞΔΣΞΦΔΨΝΔΞΦ");
             }
 
+           // load4(Qall);
+      //  Qall="";
+
         if (typose==1){
 
             oStream.println("\n\n\n");
@@ -1132,7 +1193,7 @@ Double sum=0.0;
 
         Q="UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE ID=" + s+";" ;
         mydatabase.execSQL(Q);
-        Qall=Qall+Q;
+        Qall=Qall+"UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE IDPARAGG=" + s+";";
         if (gYparxoyses ==0) {    //"+idBardia+"
 
             Q="UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
@@ -1156,9 +1217,9 @@ Double sum=0.0;
 
         try {
 
+            load3(Qmast+Qall);
 
-
-          //  load3(Qall);
+           // load3(Qall);
             // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
@@ -1244,7 +1305,34 @@ Double sum=0.0;
               //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
               //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
                 execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
-             //   handler2.sendEmptyMessage(0);
+               // handler2.sendEmptyMessage(0);
+            }
+        };
+        Thread aThread = new Thread(aRunnable);
+        aThread.start();
+        //while ( bT.getText().toString()=="*"){
+        android.os.SystemClock.sleep(12000);
+        // };
+        Toast.makeText(getApplicationContext(), "OK ENHMEΡΩΘΗΚΕ", Toast.LENGTH_SHORT).show();
+
+        //=========================================  sql server Update ===============================
+
+
+
+
+    }
+
+
+    public void load4(final String Query){
+        //=========================================  sql server Update ===============================
+
+        Runnable aRunnable = new Runnable() {
+            public void run() {
+                // TextView textView = findViewById(R.id.textView3);
+                //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
+                //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
+                execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
+                //   handler2.sendEmptyMessage(0);
             }
         };
         Thread aThread = new Thread(aRunnable);
@@ -1260,6 +1348,9 @@ Double sum=0.0;
 
 
     }
+
+
+
 
     public void kentriko (View view){
         Intent intent = new Intent(this, trapezia.class);
