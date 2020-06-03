@@ -3,6 +3,7 @@ package com.example.ioun25;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,6 +16,8 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.StrictMode;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.Gravity;
@@ -45,6 +48,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -239,23 +243,6 @@ separated[1]; // this will contain " they taste good"
                 // todo
                 TextView h;
                 h =(TextView)findViewById(R.id.hello);
-            //    h.setText("*"+Pelatis);
-              //  for (int i = 0; i < pel.size(); i++) {
-                //    System.out.println("πελατης"+pel.get(i));
-              //  }
-
-
-            //    try {
-
-          //      Toast.makeText(getApplicationContext(), "ok διαβαστηκε", Toast.LENGTH_SHORT).show();
-
-                //   load4(Qall);
-                    // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
-
-             //   } catch (Exception ex) {
-            //        ex.printStackTrace();
-             //   }
-
 
 
 
@@ -1099,16 +1086,22 @@ int kn=0;
                     // movies.add(cursor.getString(0));
                 } while (cursor5.moveToNext());
             }
+
+
+            Qmast="INSERT INTO PARAGGMASTER (TABLETN,IDPARAGG,NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (1,"+s+",0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
+           // Qall=Qall+Qmast;
+            load4(Qmast);
+         //   load4(Qmast);
+         //   load4(Qmast);
+
+
         }else{
             s=fIDPARAGG;
         }
 
 
 
-Qmast="INSERT INTO PARAGGMASTER (TABLETN,IDPARAGG,NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (1,"+s+",0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
-      //  Qall=Qall+Q;
-
-      //  load3(Q);
+      //
 
 
 
@@ -1127,8 +1120,8 @@ Double sum=0.0;
 
 
            // QuerSQL.add(Q) ;
-           // load3(Q);
-            Qall=Qall+Q;
+            load4(Q);
+          //  Qall=Qall+Q;
 
 
         }
@@ -1193,19 +1186,23 @@ Double sum=0.0;
 
         Q="UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE ID=" + s+";" ;
         mydatabase.execSQL(Q);
-        Qall=Qall+"UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE IDPARAGG=" + s+";";
+        load4(Q);
+        Q="UPDATE PARAGGMASTER SET AJIA=AJIA+"+csum+" WHERE IDPARAGG=" + s+";";
+        load4(Q);
         if (gYparxoyses ==0) {    //"+idBardia+"
 
             Q="UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
             mydatabase.execSQL(Q);
-            Qall=Qall+Q;
+            load4(Q);
+           // Qall=Qall+Q;
         }else{
             Double dd=0.0;
             dd=ReadSqln("select AJIA FROM PARAGGMASTER WHERE ID=" + s );
 
             Q="UPDATE TABLES SET CH1='" + dd.toString() + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
             mydatabase.execSQL(Q);
-            Qall=Qall+Q;
+            //Qall=Qall+Q;
+            load4(Q);
         }
 
 
@@ -1217,7 +1214,7 @@ Double sum=0.0;
 
         try {
 
-            load3(Qmast+Qall);
+          //  load3(Qmast);
 
            // load3(Qall);
             // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
@@ -1305,13 +1302,13 @@ Double sum=0.0;
               //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
               //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
                 execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
-               // handler2.sendEmptyMessage(0);
+            //   handler2.sendEmptyMessage(0);
             }
         };
         Thread aThread = new Thread(aRunnable);
         aThread.start();
         //while ( bT.getText().toString()=="*"){
-        android.os.SystemClock.sleep(12000);
+        android.os.SystemClock.sleep(2000);
         // };
         Toast.makeText(getApplicationContext(), "OK ENHMEΡΩΘΗΚΕ", Toast.LENGTH_SHORT).show();
 
@@ -1324,7 +1321,31 @@ Double sum=0.0;
 
 
     public void load4(final String Query){
-        //=========================================  sql server Update ===============================
+
+        ConnectionClass  connectionClass;
+        connectionClass = new ConnectionClass();
+        try
+        {
+            Connection con = connectionClass.CONN();
+            String query2 = "Query " ;
+            Statement stmt = con.createStatement();
+            stmt.execute(Query);
+            android.os.SystemClock.sleep(200);
+            con.close();
+
+        }
+        catch (SQLException se)
+        {
+            Log.e("ERROR", se.getMessage());
+        }
+
+
+
+
+
+
+
+        /*  /=========================================  sql server Update ===============================
 
         Runnable aRunnable = new Runnable() {
             public void run() {
@@ -1344,7 +1365,7 @@ Double sum=0.0;
 
         //=========================================  sql server Update ===============================
 
-
+       */
 
 
     }
@@ -1754,7 +1775,32 @@ Double sum=0.0;
 
     }
 
-
+    public class ConnectionClass {
+        String ip = "192.168.1.4:51403";
+        String class2 = "net.sourceforge.jtds.jdbc.Driver";
+        String db = "BAR";
+        String un = "sa";
+        String password = "12345678";
+        @SuppressLint("NewApi")
+        public Connection CONN() {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            Connection conn = null;
+            String ConnURL = null;
+            try {
+                Class.forName(class2);
+                ConnURL = "jdbc:jtds:sqlserver://" + ip + ";" + "databaseName=" + db + ";user=" + un + ";password=" + password + ";";
+                conn = DriverManager.getConnection(ConnURL);
+            } catch (SQLException se) {
+                Log.e("ERROR", se.getMessage());
+            } catch (ClassNotFoundException e) {
+                Log.e("ERROR", e.getMessage());
+            } catch (Exception e) {
+                Log.e("ERROR", e.getMessage());
+            }
+            return conn;
+        }
+    }
 
 
 }
