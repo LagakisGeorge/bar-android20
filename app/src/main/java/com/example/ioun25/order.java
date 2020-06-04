@@ -1321,7 +1321,7 @@ Double sum=0.0;
 
 
     public void load4(final String Query){
-
+      /* ============================================= δουλευει οκ
         ConnectionClass  connectionClass;
         connectionClass = new ConnectionClass();
         try
@@ -1339,33 +1339,11 @@ Double sum=0.0;
             Log.e("ERROR", se.getMessage());
         }
 
+     */
 
 
 
 
-
-
-        /*  /=========================================  sql server Update ===============================
-
-        Runnable aRunnable = new Runnable() {
-            public void run() {
-                // TextView textView = findViewById(R.id.textView3);
-                //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
-                //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
-                execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
-                //   handler2.sendEmptyMessage(0);
-            }
-        };
-        Thread aThread = new Thread(aRunnable);
-        aThread.start();
-        //while ( bT.getText().toString()=="*"){
-        android.os.SystemClock.sleep(2000);
-        // };
-        Toast.makeText(getApplicationContext(), "OK ENHMEΡΩΘΗΚΕ", Toast.LENGTH_SHORT).show();
-
-        //=========================================  sql server Update ===============================
-
-       */
 
 
     }
@@ -1776,7 +1754,7 @@ Double sum=0.0;
     }
 
     public class ConnectionClass {
-        String ip = "192.168.1.4:51403";
+        String ip = "192.168.1.3:51403";
         String class2 = "net.sourceforge.jtds.jdbc.Driver";
         String db = "BAR";
         String un = "sa";
