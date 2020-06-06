@@ -68,15 +68,16 @@
 
         android:layout_marginTop="268dp" />
 
+
     <Button
         android:id="@+id/SQL"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/arx_eidon"
 
+        android:layout_marginTop="-208dp"
         android:onClick="formaSQL"
         android:text="sql" />
-
 
     <Button
         android:id="@+id/REPORT"

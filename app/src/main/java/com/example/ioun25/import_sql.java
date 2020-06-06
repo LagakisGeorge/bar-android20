@@ -41,7 +41,7 @@ public class import_sql extends AppCompatActivity {
     EditText e1;
 
     // dell οικιας .7  49702  p@ssw0rd
-    private String URL = "jdbc:jtds:sqlserver://192.168.1.4:51403/BAR;instance=SQL17;";
+    private String URL = "jdbc:jtds:sqlserver://192.168.1.3:51403/BAR;instance=SQL17;";
     private String USER = "sa";
     private String PASS = "12345678";  // fujitsu laptop
     // private String PASS = "p@ssw0rd";   // oikia
@@ -103,7 +103,7 @@ public class import_sql extends AppCompatActivity {
         handlerEIDH = new Handler(new Handler.Callback() {
             @Override
             public boolean handleMessage(Message msg) {
-               // View view=new View();
+                // View view=new View();
                 Array3_EIDHToSQLite();  //σβηνει τα ειδη sqllite
                 Toast.makeText(getApplicationContext(), "ok διαβαστηκε", Toast.LENGTH_SHORT).show();
                 LoadXar1SQLSERVER();
@@ -129,7 +129,7 @@ public class import_sql extends AppCompatActivity {
         for(int i = 0; i<pel3.size();i++)
         {
             String Q;
-           // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
+            // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
 
             Q = pel3.get(i);
             mydatabase.execSQL(Q);
@@ -138,46 +138,46 @@ public class import_sql extends AppCompatActivity {
 
     //pelKathg
     public void Array_KATHGtoSQLite() {
-    SQLiteDatabase mydatabase = null;
-    mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-    mydatabase.execSQL("DELETE FROM KATHG");
-    for(int i = 0; i<pelKathg.size();i++)
-    {
-        String Q;
-        // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
+        mydatabase.execSQL("DELETE FROM KATHG");
+        for(int i = 0; i<pelKathg.size();i++)
+        {
+            String Q;
+            // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
 
-        Q = pelKathg.get(i);
-        mydatabase.execSQL(Q);
+            Q = pelKathg.get(i);
+            mydatabase.execSQL(Q);
+        }
     }
-}
 
     // Array_TRAPEZIAtoSQLite
     public void Array_TRAPEZIAtoSQLite() {
-    SQLiteDatabase mydatabase = null;
-    mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-    mydatabase.execSQL("DELETE FROM TABLES");
-    for(int i = 0; i<pelKathg.size();i++)
-    {
-        String Q;
-        // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
+        mydatabase.execSQL("DELETE FROM TABLES");
+        for(int i = 0; i<pelKathg.size();i++)
+        {
+            String Q;
+            // Q = "INSERT INTO EIDH (ONO,ID) VALUES (" + pel3.get(i) + ")"; // pel3.get(i) ;
 
-        Q = pelKathg.get(i);
-        mydatabase.execSQL(Q);
+            Q = pelKathg.get(i);
+            mydatabase.execSQL(Q);
+        }
     }
-}
 
     public void Array2_xar1ToSQLite() {
-    SQLiteDatabase mydatabase = null;
-    mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
         mydatabase.execSQL("DELETE FROM XAR1");
         for(int i = 0; i<pel3.size();i++)
-    {
-        String Q;
-        Q = "INSERT INTO XAR1 (ONO,ID) VALUES (" + pel3.get(i) + ")";
+        {
+            String Q;
+            Q = "INSERT INTO XAR1 (ONO,ID) VALUES (" + pel3.get(i) + ")";
 
-        mydatabase.execSQL(Q);
+            mydatabase.execSQL(Q);
+        }
     }
-}
 
 
 
@@ -186,7 +186,7 @@ public class import_sql extends AppCompatActivity {
 
         SQLiteDatabase mydatabase=null;
         mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-         //  mydatabase.execSQL(Q);
+        //  mydatabase.execSQL(Q);
         mydatabase.execSQL("DELETE FROM PARAGG");
         mydatabase.execSQL("DELETE FROM PARAGGMASTER");
         mydatabase.execSQL("UPDATE TABLES  SET KATEILHMENO=0,IDPARAGG=0  ");
@@ -374,7 +374,7 @@ cursor2.moveToFirst() ;
                 ResultSet rs = getData("SELECT *  FROM EIDH ");
                 try {
                     while (rs.next()) {
-                       // pel3.add("'"+rs.getString("ONO") + "',"+ Integer.toString(rs.getInt("ID")) );
+                        // pel3.add("'"+rs.getString("ONO") + "',"+ Integer.toString(rs.getInt("ID")) );
 
 
                         String KOD, ONO, CH1, CH2;
@@ -397,7 +397,7 @@ cursor2.moveToFirst() ;
                         String Q;
                         Q = "INSERT INTO EIDH (KOD,ONO,CH1,CH2,ID,KATHG,TIMH) VALUES";
                         Q =Q+  "('" + KOD + "','" + ONO + "','" + CH1 + "','" + CH2 + "'," + Integer.toString(ID) + "," + Integer.toString(KAT) + "," + cTIMH + ")";
-                         pel3.add(Q);
+                        pel3.add(Q);
 
 
 
@@ -412,7 +412,7 @@ cursor2.moveToFirst() ;
         Thread aThread = new Thread(aRunnable);
         aThread.start();
         android.os.SystemClock.sleep(1000);// };
-       // Toast.makeText(getApplicationContext(), "EIDH ok", Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getApplicationContext(), "EIDH ok", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -427,7 +427,7 @@ cursor2.moveToFirst() ;
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
 
             String ff=e1.getText().toString();
-           // t1.setText(ff);
+            // t1.setText(ff);
 
             Cursor cursor2 = mydatabase.rawQuery(ff, null);
 
@@ -435,7 +435,7 @@ cursor2.moveToFirst() ;
                 do {
                     n++;
                     values.add(String.valueOf(n)+";"+ cursor2.getString(0));
-                            // +";"+cursor2.getString(1)+";"+cursor2.getString(2)+";"+cursor2.getString(3));
+                    // +";"+cursor2.getString(1)+";"+cursor2.getString(2)+";"+cursor2.getString(3));
 
                 } while (cursor2.moveToNext());
             }
@@ -494,7 +494,7 @@ cursor2.moveToFirst() ;
     }
 
     // fujitsu
- //   private String URL = "jdbc:jtds:sqlserver://192.168.1.9:51403/BAR;instance=SQL17;";
+    //   private String URL = "jdbc:jtds:sqlserver://192.168.1.9:51403/BAR;instance=SQL17;";
     // private String URL = "jdbc:jtds:sqlserver://192.168.1.5:52735/BAR;instance=SQLEXPRESS;";
 
 
@@ -572,7 +572,7 @@ cursor2.moveToFirst() ;
             //   LoadXar1SQLSERVER(view);
 
             //  Load2EIDHSQLSERVER(view);
-             Toast.makeText(getApplicationContext(), "4.ok XAR1", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "4.ok XAR1", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -583,7 +583,7 @@ cursor2.moveToFirst() ;
         try {
 
             Load2EIDHSQLSERVER(view);
-           // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
+            // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -615,9 +615,9 @@ cursor2.moveToFirst() ;
                 ResultSet crs = getData("SELECT ONO,KATEILHMENO,NUM1  FROM TABLES where NUM1>0");
                 try {
                     while (crs.next()) {
-                       String Q = "INSERT INTO TABLES (ONO) VALUES";
-                            Q = Q + "('" + crs.getString("ONO") + "')" ;
-                         // + Integer.toString(crs.getInt("KATEILHMENO")) + "," + Integer.toString(crs.getInt("KATEILHMENO")) + "')";
+                        String Q = "INSERT INTO TABLES (ONO) VALUES";
+                        Q = Q + "('" + crs.getString("ONO") + "')" ;
+                        // + Integer.toString(crs.getInt("KATEILHMENO")) + "," + Integer.toString(crs.getInt("KATEILHMENO")) + "')";
                         pelKathg.add(Q);
                     }
                 } catch (SQLException e) {
@@ -650,7 +650,7 @@ cursor2.moveToFirst() ;
                 ResultSet crs = getData("SELECT KOD, ONO  FROM KATHG ");
                 try {
 
-                   // ExecuteSql("delete from KATHG");
+                    // ExecuteSql("delete from KATHG");
                     while (crs.next()) {
                         //  System.out.println(rs.getString("EPO"));
                         if (crs.getInt("KOD") >= 0) {
@@ -660,7 +660,7 @@ cursor2.moveToFirst() ;
                             Q = "INSERT INTO KATHG (KOD,ONO) VALUES";
                             Q = Q + "(" + Integer.toString(crs.getInt("KOD")) + ",'" + crs.getString("ONO") + "')";
                             pelKathg.add(Q);
-                          //  ExecuteSql(Q);
+                            //  ExecuteSql(Q);
                         } else {
                             // pelKathg.add(rs.getString("ONO")+"----2------");
                         }
@@ -711,7 +711,7 @@ cursor2.moveToFirst() ;
                     "[IPSQL][nvarchar](155) ,"+
                     "[IPPRINTER] [nvarchar](155)  ); ");
 
-          //  mydatabase.execSQL("INSERT INTO MEM (ONO,KOD) VALUES('192.168.1.202',1);");
+            //  mydatabase.execSQL("INSERT INTO MEM (ONO,KOD) VALUES('192.168.1.202',1);");
             mydatabase.execSQL("INSERT INTO MEM (IPPRINTER,IPSQL,ACCESSCODE) VALUES('192.168.1.202',  '192.168.1.7:49705/BAR;instance=SQLEXPRESS;','1');");
 
             Toast.makeText(getApplicationContext(), "1A.XAR1 ok", Toast.LENGTH_SHORT).show();
@@ -843,15 +843,15 @@ cursor2.moveToFirst() ;
             }
 
             if (n<8){
-              //  mydatabase.execSQL("INSERT INTO TABLES (ONO) VALUES('004');");
-              //  mydatabase.execSQL("INSERT INTO TABLES (ONO) VALUES('005');");
+                //  mydatabase.execSQL("INSERT INTO TABLES (ONO) VALUES('004');");
+                //  mydatabase.execSQL("INSERT INTO TABLES (ONO) VALUES('005');");
             }
 
 
 
-   //     } catch (SQLiteAccessPermException e) {
-     //       e.printStackTrace();
-     //   }
+            //     } catch (SQLiteAccessPermException e) {
+            //       e.printStackTrace();
+            //   }
 
 
 
@@ -871,7 +871,7 @@ cursor2.moveToFirst() ;
 
 
 
-        String c="CREATE TABLE IF NOT EXISTS PARAGGMASTER("+
+            String c="CREATE TABLE IF NOT EXISTS PARAGGMASTER("+
                     "[TRAPEZI] [nvarchar](55) ,"+
                     "[IDERGAZ] [int] ,"+
                     "[HME] [datetime] ,"+
@@ -886,13 +886,19 @@ cursor2.moveToFirst() ;
 
             mydatabase.execSQL(c);
 
-         /*    c="CREATE TABLE IF NOT EXISTS PARAGGMASTER2("+
+            c="CREATE TABLE IF NOT EXISTS PARAGGMASTER2("+
                     "[TRAPEZI] [nvarchar](55) ,"+
                     "[IDERGAZ] [int] ,"+
                     "[HME] [datetime] ,"+
                     "[IDBARDIA] [int] ,"+
                     "[AJIA] [real] ,"+
                     "[TROPOS] [int] ,"+
+                    "[CASH] [real] ,"+
+                    "[PIS1] [real] ,"+
+                    "[PIS2] [real] ,"+
+                    "[KERA] [real] ,"+
+
+
                     "[NUM1] [real] ,"+
                     "[NUM2] [real] ,"+
                     "[CH1] [varchar](55) ,"+
@@ -906,18 +912,18 @@ cursor2.moveToFirst() ;
 
 
             mydatabase.execSQL("DELETE FROM PARAGGMASTER2");
-            mydatabase.execSQL("INSERT INTO PARAGGMASTER2 ( ONO,CH1,CH2,TRAPEZI,AJIA,IDERGAZ,IDBARDIA) SELECT  ONO,CH1,CH2,TRAPEZI,AJIA,IDERGAZ,IDBARDIA FROM PARAGGMASTER;");
+            mydatabase.execSQL("INSERT INTO PARAGGMASTER2 ( HME,IDERGAZ,TROPOS,CH1,CH2,TRAPEZI,AJIA,IDERGAZ,IDBARDIA) SELECT  HME,IDERGAZ,TROPOS,CH1,CH2,TRAPEZI,AJIA,IDERGAZ,IDBARDIA FROM PARAGGMASTER;");
             mydatabase.execSQL("DROP TABLE PARAGGMASTER;");
             mydatabase.execSQL("ALTER TABLE PARAGGMASTER2 RENAME TO PARAGGMASTER;");
 
-*/
+
 
 
 
 
             c="CREATE TABLE IF NOT EXISTS  BARDIA( ID integer PRIMARY KEY, HME datetime, IDERGAZ int, [NUM1] [int] ,"+
-	"[NUM2] [int] , [CH1] [nvarchar](25) , [CH2] [nvarchar](25) , [ISOPEN] [int] , [OPENH] [nvarchar](25) ," +
-	"[CLOSEH] [nvarchar](25) ,[CASHTOT] [int] ,[CASH1] [int] ,[CASH2] [int] ,[CASH3] [int] ,[CASH4] [int] ,[CASH5] [int])" ;
+                    "[NUM2] [int] , [CH1] [nvarchar](25) , [CH2] [nvarchar](25) , [ISOPEN] [int] , [OPENH] [nvarchar](25) ," +
+                    "[CLOSEH] [nvarchar](25) ,[CASHTOT] [int] ,[CASH1] [int] ,[CASH2] [int] ,[CASH3] [int] ,[CASH4] [int] ,[CASH5] [int])" ;
 
             mydatabase.execSQL(c);
 
@@ -940,10 +946,10 @@ cursor2.moveToFirst() ;
                 mydatabase.execSQL("INSERT INTO EIDH (KOD,ONO,XAR1) VALUES('s4','004',1);");
             }
             // ψαχνω να βρω τον κωδικο που εβαλε
-          //  EditText pw;
-          //  pw=(EditText) findViewById(R.id.editText);
-          //  String cpw ="004"; // pw.getText().toString();
-          //  Cursor cursor2 = mydatabase.rawQuery("select XAR1 from  EIDH", null);
+            //  EditText pw;
+            //  pw=(EditText) findViewById(R.id.editText);
+            //  String cpw ="004"; // pw.getText().toString();
+            //  Cursor cursor2 = mydatabase.rawQuery("select XAR1 from  EIDH", null);
 
 
 

@@ -60,18 +60,22 @@ public class reports2 extends AppCompatActivity {
 
             values.add("τραπεζι");
             values.add("ωρα");
-            values.add("πληρωμη");
+
             values.add("Αξία");
+            values.add("METP");
+            values.add("ΠΙΣΤ1");
+            values.add("ΠΙΣΤ2");
+            values.add("ΚΕΡΑΣΜ");
             values.add("ID ΠΑΡΑΓΓ");
 
 
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-            Cursor cursor2 = mydatabase.rawQuery("select TRAPEZI,SUBSTR(ch2,11,6),tropos,ajia,id  from  PARAGGMASTER", null);
+            Cursor cursor2 = mydatabase.rawQuery("select TRAPEZI,SUBSTR(ch2,11,6),ajia,IFNULL(CASH,0) AS METR,IFNULL(PIS1,0) AS PISTOT1,IFNULL(PIS2,0) AS PIST2,IFNULL(KERA,0) AS KERASM,id  from  PARAGGMASTER", null);
 
             if (cursor2.moveToFirst()) {
                 do {
 
-                    for(int i = 0; i<5;i++)  {
+                    for(int i = 0; i<8;i++)  {
 
                         //    int index = c.getColumnIndex("description");
                         String str = cursor2.getString(i);

@@ -36,6 +36,7 @@ import android.view.MenuItem;
 
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,16 +70,16 @@ import static com.example.ioun25.MainActivity.toGreek;
 import static java.lang.Double.parseDouble;
 import static java.util.jar.Pack200.Packer.PASS;
 
-public class order extends AppCompatActivity {
+public class order extends AppCompatActivity  implements PopupMenu.OnMenuItemClickListener{
     String Qall="" ;
 
     TextView total_price; // μερικο συνολο
     ArrayList<String> pel;
-  //  ArrayList<String> EIDH_PARAGG; // ερχεται απο το trapezia class ΑΔΕΙΟς αλλα δεν το χρειαζομαι
+    //  ArrayList<String> EIDH_PARAGG; // ερχεται απο το trapezia class ΑΔΕΙΟς αλλα δεν το χρειαζομαι
     public static  ArrayList<String> EIDH_PARAGG;
     public Long[] idArr=new Long[100];    //  // ΤΟ ΣΗΜΑΔΕΥΩ ΓΙΑ ΤΗΝ ΜΕΡΙΚΗ ΠΛΗΡΩΜΗ
 
-                            // το χρησιμοποιω για τα είδη παραγγελίας τα οποία τα γεμιζω στο EpiloghEid
+    // το χρησιμοποιω για τα είδη παραγγελίας τα οποία τα γεμιζω στο EpiloghEid
     ArrayList<String> KATHG;
 
     ArrayList<String> QuerSQL;  // quersy gia sqlserver
@@ -90,7 +91,7 @@ public class order extends AppCompatActivity {
     // private String URL = "jdbc:jtds:sqlserver://192.168.1.5:52735/BAR;instance=SQLEXPRESS;";
     private String URL = "jdbc:jtds:sqlserver://192.168.1.4:51403/BAR;instance=SQL17;";
     private String USER = "sa";
-     private String PASS = "12345678";  //"p@ssw0rd";
+    private String PASS = "12345678";  //"p@ssw0rd";
     //  private String PASS = "p@ssw0rd";
 
 
@@ -100,7 +101,7 @@ public class order extends AppCompatActivity {
     private static int  fYparxSeires;  // ποσες σειρες υπαρχουν στην  παραγγελια(μαζι με αυτες που δεν τυπωθηκαν)
 
     Handler handler2;
-  public final  List<String> pelOrder_Items=new ArrayList<>();// pelOrder_Items;
+    public final  List<String> pelOrder_Items=new ArrayList<>();// pelOrder_Items;
 
 
     @Override
@@ -192,16 +193,16 @@ separated[1]; // this will contain " they taste good"
         list.setClickable(true);
 
         final List<Phonebook> listOfPhonebook = new ArrayList<Phonebook>();
-         Integer status2;
-            // for (int j = 0; j < EIDH_PARAGG.size(); j = j + 5){
-            for (int j = EIDH_PARAGG.size()-5;j>=0; j = j - 5){
+        Integer status2;
+        // for (int j = 0; j < EIDH_PARAGG.size(); j = j + 5){
+        for (int j = EIDH_PARAGG.size()-5;j>=0; j = j - 5){
             if (j<gYparxoyses){status2=0;}else{status2=1;}
 
             listOfPhonebook.add(new Phonebook( EIDH_PARAGG.get(j), EIDH_PARAGG.get(j+1), EIDH_PARAGG.get(j+2),EIDH_PARAGG.get(j+3),EIDH_PARAGG.get(j+4),status2,j));
         }
 
         //  listOfPhonebook.add(new Phonebook("FREDDO ESSPRESSO", "2", "12"));
-       //  listOfPhonebook.add(new Phonebook("FREDDO CAPPUCCINO", "1", "1.5"));
+        //  listOfPhonebook.add(new Phonebook("FREDDO CAPPUCCINO", "1", "1.5"));
 
         Phonebook2Adapter adapter = new Phonebook2Adapter(this, listOfPhonebook);
 
@@ -209,10 +210,10 @@ separated[1]; // this will contain " they taste good"
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View view, int position, long index) {
-              //  System.out.println("sadsfsf");
+                //  System.out.println("sadsfsf");
 
-               Toast.makeText(order.this, listOfPhonebook.get(position).getName(), Toast.LENGTH_LONG).show();
-               ListalertDialog(listOfPhonebook.get(position).getPointer());
+                Toast.makeText(order.this, listOfPhonebook.get(position).getName(), Toast.LENGTH_LONG).show();
+                ListalertDialog(listOfPhonebook.get(position).getPointer());
             }
         });
 
@@ -220,11 +221,11 @@ separated[1]; // this will contain " they taste good"
 
 
 
-       // δεν χρειαζεται
-       // moviesList=findViewById(R.id.listmaster);  //kathgories eidon
+        // δεν χρειαζεται
+        // moviesList=findViewById(R.id.listmaster);  //kathgories eidon
 
 
-       // γεμισμα της λιστας ειδώ
+        // γεμισμα της λιστας ειδώ
      /*   List<String> values=new ArrayList<>();
         for (int i = 0; i < EIDH.size(); i++) {
             values.add(EIDH.get(i));
@@ -291,7 +292,7 @@ separated[1]; // this will contain " they taste good"
                 // διαλεγοντας ενα είδος το ανεβάζει στην λίστα
                 // create_order( position);
                 Object o = kathgGrid.getItemAtPosition(position);
-               // pelOrder_Items.add(o.toString() );
+                // pelOrder_Items.add(o.toString() );
 
                 ShowDisplay(o.toString());  // ονομα κατηγοριας
 
@@ -316,12 +317,23 @@ separated[1]; // this will contain " they taste good"
 
 
 
-        Button merikiB;
+        final Button merikiB;
         merikiB=(Button)findViewById(R.id.merikiB);
         merikiB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save_meriki();
+
+
+                PopupMenu popup=new PopupMenu(getApplicationContext(),merikiB);
+                popup.setOnMenuItemClickListener(order.this);
+
+                popup.inflate(R.menu.popup_menu);
+                popup.show();
+
+
+
+
+                //  save_meriki();
             }
         });
 
@@ -411,11 +423,11 @@ separated[1]; // this will contain " they taste good"
 
                 // Convert the view as a TextView widget
                 TextView tv = (TextView) view;
-               //  if (position%5==0) {
-                     tv.setTextColor(Color.DKGRAY);
-               //  }else{
-               //      tv.setTextColor(Color.GREEN);
-               //  }
+                //  if (position%5==0) {
+                tv.setTextColor(Color.DKGRAY);
+                //  }else{
+                //      tv.setTextColor(Color.GREEN);
+                //  }
 
 
                 // Set the layout parameters for TextView widget
@@ -445,12 +457,12 @@ separated[1]; // this will contain " they taste good"
                         TypedValue.COMPLEX_UNIT_DIP, 100, r.getDisplayMetrics()));
                 // tv.setLayoutParams(new GridView.LayoutParams((width/10)*6, 50));
 
-               // if (position==0 || position==5) {
+                // if (position==0 || position==5) {
                 //    params.width = px/2;  // getPixelsFromDPs(EpiloghEid.this,168);
-                 //   tv.setLayoutParams(new GridView.LayoutParams((px*6), 100));
-               // }else{
-                    params.width = px;  // getPixelsFromDPs(EpiloghEid.this,168);
-               // }
+                //   tv.setLayoutParams(new GridView.LayoutParams((px*6), 100));
+                // }else{
+                params.width = px;  // getPixelsFromDPs(EpiloghEid.this,168);
+                // }
 
 
 
@@ -463,12 +475,12 @@ separated[1]; // this will contain " they taste good"
                 tv.setLayoutParams(params);
 
                 // Display TextView text in center position
-                  if (position%5==0 ||position%5==3 ||position%5==4)
-                  {
-                tv.setGravity(Gravity.LEFT);
-                  } else{
-                      tv.setGravity(Gravity.CENTER);  //center
-                  }
+                if (position%5==0 ||position%5==3 ||position%5==4)
+                {
+                    tv.setGravity(Gravity.LEFT);
+                } else{
+                    tv.setGravity(Gravity.CENTER);  //center
+                }
 
                 // Set the TextView text font family and text size
                 tv.setTypeface(Typeface.SANS_SERIF, Typeface.NORMAL);
@@ -508,91 +520,91 @@ separated[1]; // this will contain " they taste good"
 */
 
 
- /*  protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Button button=findViewById(R.id.button);
-        button.setOnClickListener(this);
-    }
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.button:
-                alertDialog();
-                break;
-        }
-    }
-   */
+    /*  protected void onCreate(Bundle savedInstanceState) {
+           super.onCreate(savedInstanceState);
+           setContentView(R.layout.activity_main);
+           Button button=findViewById(R.id.button);
+           button.setOnClickListener(this);
+       }
+       @Override
+       public void onClick(View v) {
+           switch (v.getId()){
+               case R.id.button:
+                   alertDialog();
+                   break;
+           }
+       }
+      */
 // πληρωνω ενα είδος ή το διαγράφω apo LISTVIEW
- public void ListalertDialog(int position) {
-     CheckBox ch1;
-     ch1=findViewById(R.id.checkBox);
+    public void ListalertDialog(int position) {
+        CheckBox ch1;
+        ch1=findViewById(R.id.checkBox);
 
-     // μερικη πληρωμή
-     if (ch1.isChecked() ){
-         if (position>=gYparxoyses){
-             Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΙ ΚΑΤΑΧΩΡΗΘΕΙ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
-             return;
-         }
-         int j=position-position%5; // ειναι το ιδιο με το position
-         if( EIDH_PARAGG.get(j).substring(0,2).equals("**")){
-             return;
-         }
+        // μερικη πληρωμή
+        if (ch1.isChecked() ){
+            if (position>=gYparxoyses){
+                Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΙ ΚΑΤΑΧΩΡΗΘΕΙ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
+                return;
+            }
+            int j=position-position%5; // ειναι το ιδιο με το position
+            if( EIDH_PARAGG.get(j).substring(0,2).equals("**")){
+                return;
+            }
 
-         // Modify the element at a given index
-         //  topCompanies.set(4, "Walmart");
-         EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
-         f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
-         TextView meriki;
-         meriki=findViewById(R.id.meriki);
-         meriki.setText(f_sum.toString());
-         show_paraggelia();
-         show_Listparaggelia();
-         return;
-
-
-
-     }
+            // Modify the element at a given index
+            //  topCompanies.set(4, "Walmart");
+            EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+            f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
+            TextView meriki;
+            meriki=findViewById(R.id.meriki);
+            meriki.setText(f_sum.toString());
+            show_paraggelia();
+            show_Listparaggelia();
+            return;
 
 
 
+        }
 
-     // διαγραφη
 
-     if (position<gYparxoyses){
-         Toast.makeText(getApplicationContext(),"ΕΧΕΙ ΗΔΗ ΚΑΤΑΧΩΡΗΘΕΙ",Toast.LENGTH_LONG).show();
-         return;
-     }
-     AlertDialog.Builder dialog=new AlertDialog.Builder(this);
-     dialog.setMessage("Να διαγραφεί;");
-     dialog.setTitle("Dialog Box");
-     final int n;
-     n=position-position%5;
-     dialog.setPositiveButton("Ναι",
-             new DialogInterface.OnClickListener() {
-                 public void onClick(DialogInterface dialog,
-                                     int which) {
-                     Toast.makeText(getApplicationContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
-                     EIDH_PARAGG.remove(n);
-                     EIDH_PARAGG.remove(n);
-                     EIDH_PARAGG.remove(n);
-                     EIDH_PARAGG.remove(n);
-                     EIDH_PARAGG.remove(n);
-                     show_paraggelia(); //grid
-                     show_Listparaggelia();  //Listbox
-                 }
 
-             });
-     dialog.setNegativeButton("Οχι",new DialogInterface.OnClickListener() {
-         @Override
-         public void onClick(DialogInterface dialog, int which) {
-             Toast.makeText(getApplicationContext(),"ΑΚΥΡΩΣΗ",Toast.LENGTH_LONG).show();
-         }
-     });
-     AlertDialog alertDialog=dialog.create();
-     alertDialog.show();
 
- }
+        // διαγραφη
+
+        if (position<gYparxoyses){
+            Toast.makeText(getApplicationContext(),"ΕΧΕΙ ΗΔΗ ΚΑΤΑΧΩΡΗΘΕΙ",Toast.LENGTH_LONG).show();
+            return;
+        }
+        AlertDialog.Builder dialog=new AlertDialog.Builder(this);
+        dialog.setMessage("Να διαγραφεί;");
+        dialog.setTitle("Dialog Box");
+        final int n;
+        n=position-position%5;
+        dialog.setPositiveButton("Ναι",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog,
+                                        int which) {
+                        Toast.makeText(getApplicationContext(),"Yes is clicked",Toast.LENGTH_LONG).show();
+                        EIDH_PARAGG.remove(n);
+                        EIDH_PARAGG.remove(n);
+                        EIDH_PARAGG.remove(n);
+                        EIDH_PARAGG.remove(n);
+                        EIDH_PARAGG.remove(n);
+                        show_paraggelia(); //grid
+                        show_Listparaggelia();  //Listbox
+                    }
+
+                });
+        dialog.setNegativeButton("Οχι",new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(getApplicationContext(),"ΑΚΥΡΩΣΗ",Toast.LENGTH_LONG).show();
+            }
+        });
+        AlertDialog alertDialog=dialog.create();
+        alertDialog.show();
+
+    }
 
 
     public void show_Listparaggelia(){
@@ -703,48 +715,50 @@ separated[1]; // this will contain " they taste good"
 
     }
 
-public void save_meriki(){
+    public void save_meriki(String PEDIO){
 
-     if (f_sum==0){
-         Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΤΕ ΔΙΑΛΕΞΕΙ ΕΙΔΗ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
-         return;
-     }
-
-
-
-
-    SQLiteDatabase mydatabase = null;
-    mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-
-int kn=0;
-    for(int i =0;i< gYparxoyses;i=i+5)//
-    {
-
-        if(EIDH_PARAGG.get(i).substring(0,2).equals("**")){
-
-            if(idArr[kn]>0){
-                mydatabase.execSQL("update PARAGG SET ono='"+EIDH_PARAGG.get(i)+"' WHERE ID="+idArr[kn].toString());
-            }
-
-
-            // κραταω την πληρωμη σε μορφη πληρ*100 (γιατι num1 integer) για να βλεπω το υπολοιπο
+        if (f_sum==0){
+            Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΤΕ ΔΙΑΛΕΞΕΙ ΕΙΔΗ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
+            return;
+        }
 
 
 
-        } //if
 
-        kn++;
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
 
-    } //for
+        int kn=0;
+        for(int i =0;i< gYparxoyses;i=i+5)//
+        {
 
-    Double synplir=0.0;
+            if(EIDH_PARAGG.get(i).substring(0,2).equals("**")){
 
-       mydatabase.execSQL("UPDATE PARAGGMASTER SET num1=num1+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+                if(idArr[kn]>0){
+                    mydatabase.execSQL("update PARAGG SET ono='"+EIDH_PARAGG.get(i)+"' WHERE ID="+idArr[kn].toString());
+                }
 
-    Cursor cur1=mydatabase.rawQuery("select num1 from PARAGGMASTER  WHERE ID=" + fIDPARAGG,null);
-            if (cur1.moveToFirst()) {
-                synplir = cur1.getDouble(0);
-            }
+
+                // κραταω την πληρωμη σε μορφη πληρ*100 (γιατι num1 integer) για να βλεπω το υπολοιπο
+
+
+
+            } //if
+
+            kn++;
+
+        } //for
+
+        Double synplir=0.0;
+
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET num1=num1+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET "+PEDIO+"="+PEDIO+"+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+
+        Cursor cur1=mydatabase.rawQuery("select num1 from PARAGGMASTER  WHERE ID=" + fIDPARAGG,null);
+        if (cur1.moveToFirst()) {
+            synplir = cur1.getDouble(0);
+        }
         TextView textView = findViewById(R.id.textView3);
         String tr = textView.getText().toString(); // αριθμος τραπεζιού
         String[] separated3 = tr.split("#");
@@ -759,7 +773,7 @@ int kn=0;
 
 
 
-// πληρωνω ενα είδος ή το διαγράφω
+    // πληρωνω ενα είδος ή το διαγράφω
     private void alertDialog(int position) {
         CheckBox ch1;
         ch1=findViewById(R.id.checkBox);
@@ -775,14 +789,14 @@ int kn=0;
                 return;
             }
 
-                // Modify the element at a given index
-                //  topCompanies.set(4, "Walmart");
-                EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
-                f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
-                TextView meriki;
-                meriki=findViewById(R.id.meriki);
-                meriki.setText(f_sum.toString());
-                show_paraggelia();
+            // Modify the element at a given index
+            //  topCompanies.set(4, "Walmart");
+            EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+            f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
+            TextView meriki;
+            meriki=findViewById(R.id.meriki);
+            meriki.setText(f_sum.toString());
+            show_paraggelia();
             return;
 
 
@@ -870,7 +884,7 @@ int kn=0;
 
 
 
-// γεμίζει το  kathgGrid απο το sqllite->KATHG
+    // γεμίζει το  kathgGrid απο το sqllite->KATHG
     public void  create_kathg(){
 
         // γεμισμα της λιστας κατηγοριών
@@ -887,7 +901,7 @@ int kn=0;
         SQLiteDatabase mydatabase=null;
         Integer n=0;
         kathgGrid=(GridView)findViewById(R.id.listKathg);
-       final List<String> values=new ArrayList<>();
+        final List<String> values=new ArrayList<>();
 
         try{
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
@@ -932,14 +946,14 @@ int kn=0;
 
                             // Set the width of TextView widget (item of GridView)
 
-                  //  IMPORTANT
-                    //    Adjust the TextView widget width depending
-                    //    on GridView width and number of columns.
+                            //  IMPORTANT
+                            //    Adjust the TextView widget width depending
+                            //    on GridView width and number of columns.
 
-                    //    GridView width / Number of columns = TextView width.
+                            //    GridView width / Number of columns = TextView width.
 
-                    //    Also calculate the GridView padding, margins, vertical spacing
-                    //    and horizontal spacing.
+                            //    Also calculate the GridView padding, margins, vertical spacing
+                            //    and horizontal spacing.
 
 
 
@@ -997,7 +1011,7 @@ int kn=0;
 
 
 
-// ανεβαζει στο Paragg apo to ton pinaka pelOrder_Items
+    // ανεβαζει στο Paragg apo to ton pinaka pelOrder_Items
     public void create_order (int position) {
 
 
@@ -1027,14 +1041,14 @@ int kn=0;
     }
 
 
-// σώζει την παραγγελια σε sqlιτε   //server
+    // σώζει την παραγγελια σε sqlιτε   //server
     public void SAVE_ORDER (View view) {
         SAVE_ORDER2(view);
     }
 
     public void SAVE_ORDER2(View view) {
-    // --------------------- ok sql server save ----------------------------------------------
-     // String Qall="" ;
+        // --------------------- ok sql server save ----------------------------------------------
+        // String Qall="" ;
         Qall="";
 
       /*    TEST SPOSTOLIS SE SQL IS OK!!!!!!!
@@ -1089,10 +1103,10 @@ int kn=0;
 
 
             Qmast="INSERT INTO PARAGGMASTER (TABLETN,IDPARAGG,NUM1,AJIA,TRAPEZI,IDBARDIA,CH1) VALUES (1,"+s+",0,0,'"+tr+"',"+idBardia.toString()+",CONVERT( CHAR(10) , GETDATE() , 103 )  ) ; ";
-           // Qall=Qall+Qmast;
+            // Qall=Qall+Qmast;
             load4(Qmast);
-         //   load4(Qmast);
-         //   load4(Qmast);
+            //   load4(Qmast);
+            //   load4(Qmast);
 
 
         }else{
@@ -1101,27 +1115,27 @@ int kn=0;
 
 
 
-      //
+        //
 
 
 
 
 
 
-Double sum=0.0;
+        Double sum=0.0;
 
         for(int i = gYparxoyses; i<EIDH_PARAGG.size();i=i+5)//
         {
             //String Q;
             Q="INSERT INTO PARAGG (IDPARAGG,TRAPEZI,ONO,POSO,TIMH,PROSUETA,CH2,NUM1) VALUES ("+s+",'"+tr+"','"+ EIDH_PARAGG.get(i)+"',";
-    Q=Q+ EIDH_PARAGG.get(i+1)+","+ EIDH_PARAGG.get(i+2)+",'"+ EIDH_PARAGG.get(i+3)+"','"+EIDH_PARAGG.get(i+4)+"',0);";
+            Q=Q+ EIDH_PARAGG.get(i+1)+","+ EIDH_PARAGG.get(i+2)+",'"+ EIDH_PARAGG.get(i+3)+"','"+EIDH_PARAGG.get(i+4)+"',0);";
             mydatabase.execSQL(Q);
             sum=sum+ parseDouble(EIDH_PARAGG.get(i+1))*parseDouble(EIDH_PARAGG.get(i+2));
 
 
-           // QuerSQL.add(Q) ;
+            // QuerSQL.add(Q) ;
             load4(Q);
-          //  Qall=Qall+Q;
+            //  Qall=Qall+Q;
 
 
         }
@@ -1135,7 +1149,7 @@ Double sum=0.0;
             SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());  //"yyyyMMdd_HHmmss"
             String cur = sdf.format(new Date());
 
-        for(int i = gYparxoyses; i<EIDH_PARAGG.size();i=i+5)//
+            for(int i = gYparxoyses; i<EIDH_PARAGG.size();i=i+5)//
             {
 
                 if (i == gYparxoyses){
@@ -1153,16 +1167,16 @@ Double sum=0.0;
                 // oStream.println("λσαδσξδΞΣΔΞΑΔΞΕΙΞΔΣΞΦΔΨΝΔΞΦ");
             }
 
-           // load4(Qall);
-      //  Qall="";
+            // load4(Qall);
+            //  Qall="";
 
-        if (typose==1){
+            if (typose==1){
 
-            oStream.println("\n\n\n");
-            oStream.println("\n\n\n");
-            oStream.println("\n\n\n");
+                oStream.println("\n\n\n");
+                oStream.println("\n\n\n");
+                oStream.println("\n\n\n");
 
-        }
+            }
 
 
             oStream.close();
@@ -1174,11 +1188,11 @@ Double sum=0.0;
         }
 
 
-       // DecimalFormat df = new DecimalFormat("#.##");
-       // sum = Double.valueOf(df.format(sum));
+        // DecimalFormat df = new DecimalFormat("#.##");
+        // sum = Double.valueOf(df.format(sum));
         String csum = sum.toString();    // df.format(sum);
 
-       // String csum = df.format(sum);
+        // String csum = df.format(sum);
 
         csum = csum.replace(",", ".");
 
@@ -1194,7 +1208,7 @@ Double sum=0.0;
             Q="UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
             mydatabase.execSQL(Q);
             load4(Q);
-           // Qall=Qall+Q;
+            // Qall=Qall+Q;
         }else{
             Double dd=0.0;
             dd=ReadSqln("select AJIA FROM PARAGGMASTER WHERE ID=" + s );
@@ -1214,9 +1228,9 @@ Double sum=0.0;
 
         try {
 
-          //  load3(Qmast);
+            //  load3(Qmast);
 
-           // load3(Qall);
+            // load3(Qall);
             // Toast.makeText(getApplicationContext(), "4.ok eidh", Toast.LENGTH_SHORT).show();
 
         } catch (Exception ex) {
@@ -1237,11 +1251,11 @@ Double sum=0.0;
 
         Intent intent = new Intent(this, trapezia.class);
         // EditText editText = (EditText) findViewById(R.id.editText);
-     //   String message2 ="---" ;// EditText.GetText().toString();
-      //  intent.putExtra(EXTRA_MESSAGE, message2);
-      //  intent.putExtra("mpel", pel); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ ΤΡΑΠΕΖΙΑ
-      //  intent.putExtra("mEIDH", pel3); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ EIDH
-      //  intent.putExtra("mKathg", pelKathg); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ EIDH
+        //   String message2 ="---" ;// EditText.GetText().toString();
+        //  intent.putExtra(EXTRA_MESSAGE, message2);
+        //  intent.putExtra("mpel", pel); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ ΤΡΑΠΕΖΙΑ
+        //  intent.putExtra("mEIDH", pel3); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ EIDH
+        //  intent.putExtra("mKathg", pelKathg); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΑ EIDH
         startActivity(intent);
 
 
@@ -1298,11 +1312,11 @@ Double sum=0.0;
 
         Runnable aRunnable = new Runnable() {
             public void run() {
-             // TextView textView = findViewById(R.id.textView3);
-              //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
-              //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
+                // TextView textView = findViewById(R.id.textView3);
+                //  String tr=textView.getText().toString(); // αριθμος τραπεζιού
+                //   execData("insert into PARAGG (TRAPEZI,HME) VALUES ('"+tr+"',GETDATE()  )");
                 execData(Query);   //  "insert into PARAGG (TRAPEZI,HME) VALUES ('52',GETDATE()  )   ");
-            //   handler2.sendEmptyMessage(0);
+                //   handler2.sendEmptyMessage(0);
             }
         };
         Thread aThread = new Thread(aRunnable);
@@ -1357,61 +1371,61 @@ Double sum=0.0;
         startActivity(intent);
     }
 
-public void print_logar(View view){
-    SAVE_ORDER2(view);
-Double sum=0.0;
-    TextView textView = findViewById(R.id.textView3);
-    String tr=textView.getText().toString(); // αριθμος τραπεζιού
-    try {
+    public void print_logar(View view){
+        SAVE_ORDER2(view);
+        Double sum=0.0;
+        TextView textView = findViewById(R.id.textView3);
+        String tr=textView.getText().toString(); // αριθμος τραπεζιού
+        try {
 
-        Socket sock = new Socket("192.168.1.202", 9100);
-        PrintWriter oStream = new PrintWriter(sock.getOutputStream());
-        int typose=0;
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());  //"yyyyMMdd_HHmmss"
-        String cur = sdf.format(new Date());
+            Socket sock = new Socket("192.168.1.202", 9100);
+            PrintWriter oStream = new PrintWriter(sock.getOutputStream());
+            int typose=0;
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());  //"yyyyMMdd_HHmmss"
+            String cur = sdf.format(new Date());
 
-        for(int i = 0; i<EIDH_PARAGG.size();i=i+5)//
-        {
+            for(int i = 0; i<EIDH_PARAGG.size();i=i+5)//
+            {
 
-            if (i == 0){
+                if (i == 0){
 
 
-                oStream.println(toGreek("ΤΡΑΠΕΖΙ No ")+tr+"   "+cur);
-                oStream.println(toGreek("==========================================="));
-                typose=1;
+                    oStream.println(toGreek("ΤΡΑΠΕΖΙ No ")+tr+"   "+cur);
+                    oStream.println(toGreek("==========================================="));
+                    typose=1;
+                }
+                String c=toGreek(EIDH_PARAGG.get(i))+"                                   ";
+                String timh=Double.toString(parseDouble(EIDH_PARAGG.get(i+2)))+"                                   ";
+                double mer=  parseDouble(EIDH_PARAGG.get(i+1))*parseDouble(EIDH_PARAGG.get(i+2));
+
+                oStream.println(c.substring(0,30)+"  "+EIDH_PARAGG.get(i+1)+"X"+timh.substring(0,5)+"="+Double.toString(mer));
+
+
+
+                sum=sum+ mer;
             }
-            String c=toGreek(EIDH_PARAGG.get(i))+"                                   ";
-            String timh=Double.toString(parseDouble(EIDH_PARAGG.get(i+2)))+"                                   ";
-             double mer=  parseDouble(EIDH_PARAGG.get(i+1))*parseDouble(EIDH_PARAGG.get(i+2));
 
-            oStream.println(c.substring(0,30)+"  "+EIDH_PARAGG.get(i+1)+"X"+timh.substring(0,5)+"="+Double.toString(mer));
+            if (typose==1){
+
+                oStream.println("===========================================");
+                oStream.println("                                       "+Double.toString(sum));
+                oStream.println("\n\n\n");
+                oStream.println("\n\n\n");
+
+            }
 
 
-
-            sum=sum+ mer;
+            oStream.close();
+            sock.close();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
-        if (typose==1){
-
-            oStream.println("===========================================");
-            oStream.println("                                       "+Double.toString(sum));
-            oStream.println("\n\n\n");
-            oStream.println("\n\n\n");
-
-        }
 
 
-        oStream.close();
-        sock.close();
-    } catch (UnknownHostException e) {
-        e.printStackTrace();
-    } catch (IOException e) {
-        e.printStackTrace();
     }
-
-
-
-}
 
     public Double ReadSqln (String query ){
         Double x;
@@ -1429,12 +1443,12 @@ Double sum=0.0;
         return x;
     }
 
-// ΦΟΡΤΩΝΩ ΤΗΝ ΗΔΗ ΥΠΑΡΧΟΥΣΑ ΠΑΡΑΓΓΕΛΙΑ
+    // ΦΟΡΤΩΝΩ ΤΗΝ ΗΔΗ ΥΠΑΡΧΟΥΣΑ ΠΑΡΑΓΓΕΛΙΑ
     public void LoadYparxoysa (String tr,String IDPARAGG) {
         SQLiteDatabase mydatabase=null;
         Integer n=0;
-      //  moviesList=(GridView)findViewById(R.id.listmaster);
-      //  final List<String> values=new ArrayList<>();
+        //  moviesList=(GridView)findViewById(R.id.listmaster);
+        //  final List<String> values=new ArrayList<>();
         Paragg=(GridView)findViewById(R.id.listdetail);
         try{
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
@@ -1443,7 +1457,7 @@ Double sum=0.0;
 
             // βρισκω τον αριθμο παραγγελιας idparagg
             TextView textView = findViewById(R.id.textView3);
-         //   String tr=textView.getText().toString(); // αριθμος τραπεζιού
+            //   String tr=textView.getText().toString(); // αριθμος τραπεζιού
 
          /*   String idparagg="00";
             Cursor cursor1 = mydatabase.rawQuery("select IDPARAGG from  TABLES WHERE ONO='"+tr+"'", null);
@@ -1492,7 +1506,7 @@ Double sum=0.0;
 
             EIDH_PARAGG=new ArrayList<String>();
 
-          //  EIDH_PARAGG.clear();
+            //  EIDH_PARAGG.clear();
 
             Cursor cursor2 = mydatabase.rawQuery("select ONO,POSO,TIMH,PROSUETA,CH2,ID from  PARAGG where idparagg="+IDPARAGG, null);
 
@@ -1507,8 +1521,8 @@ Double sum=0.0;
                     EIDH_PARAGG.add( cursor2.getString(2));
                     EIDH_PARAGG.add( cursor2.getString(3));
                     EIDH_PARAGG.add( cursor2.getString(4));
-                   // EIDH_PARAGG.add( "");
-                  //  fIDPARAGG=fIDPARAGG+5;  // υπαρχουσες εγγραφες
+                    // EIDH_PARAGG.add( "");
+                    //  fIDPARAGG=fIDPARAGG+5;  // υπαρχουσες εγγραφες
                     fYparxSeires=fYparxSeires+5;
 
                     cursor2.moveToNext();
@@ -1553,23 +1567,23 @@ Double sum=0.0;
 
     };
 
-   // δειχνει τα ειδη σε αλλο intent για να διαλεξω
+    // δειχνει τα ειδη σε αλλο intent για να διαλεξω
     public void ShowDisplay(String cKathg) {
         // cKathg : ονομα κατηγοριας
 
         Intent intent = new Intent(this, EpiloghEid.class);
-     //   intent.putExtra("arrayListExtra", mArray);
-     //   intent.putExtra("stringExtra", mString);
-     //   intent.putExtra("intExtra", mValue);
-       // String message2 ="---" ;// EditText.GetText().toString();
+        //   intent.putExtra("arrayListExtra", mArray);
+        //   intent.putExtra("stringExtra", mString);
+        //   intent.putExtra("intExtra", mValue);
+        // String message2 ="---" ;// EditText.GetText().toString();
 
         TextView Trapezi_idparagg = findViewById(R.id.textView32);
-         String message=Trapezi_idparagg.getText().toString(); // αριθμος τραπεζιού;idparagg
+        String message=Trapezi_idparagg.getText().toString(); // αριθμος τραπεζιού;idparagg
 
 
         intent.putExtra("mpel2",message);  // αριθμος τραπεζιού
 
-       //String message = intent.getStringExtra("mpel2");  // αριθμος τραπεζιού
+        //String message = intent.getStringExtra("mpel2");  // αριθμος τραπεζιού
 
         intent.putExtra(EXTRA_MESSAGE, cKathg);
         intent.putExtra("mEIDH", EIDH_PARAGG); // ΣΤΕΛΝΩ ΤΟΝ ΠΙΝΑΚΑ ΜΕ ΤΗΝ ΤΡΕΧΟΥΣΑ ΠΑΡΑΓΓΕΛΙΑ
@@ -1577,7 +1591,57 @@ Double sum=0.0;
 
     };
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
 
+        String PEDIO="CASH";
+        String PLIROMI="";
+        Integer mp=1;
+        switch (item.getItemId()) {
+            case R.id.one: {
+                PEDIO="CASH";
+                PLIROMI=MainActivity.mPliromes[1];
+                // Toast.makeText(trapezia.this,"Clicked 1on the action", Toast.LENGTH_LONG).show();
+                //        return true;
+                mp=1;
+                break;
+            }
+            case R.id.two: {
+                PEDIO="PIS1";
+                PLIROMI=MainActivity.mPliromes[2];
+                mp=2;
+                break;
+                //      return true;
+            }
+            case R.id.three: {
+                PLIROMI=MainActivity.mPliromes[3];
+                mp=3;
+                PEDIO="PIS2";
+                break;
+                //    return true;
+            }
+            case R.id.four: {
+                PLIROMI=MainActivity.mPliromes[4];
+                mp=4;
+                PEDIO="KERA";
+                break;
+                //  return true;
+            }
+
+            case R.id.EXODOS: {
+                return true;
+            }
+
+
+        }
+
+//        Payment(Long.toString(mp) ) ;
+        //      Toast.makeText(trapezia.this,PLIROMI, Toast.LENGTH_LONG).show();
+        save_meriki(PEDIO);
+
+
+        return true;
+    }
 
 
     public class Phonebook2Adapter extends BaseAdapter {  // implements OnClickListener
@@ -1682,23 +1746,23 @@ Double sum=0.0;
 
                     Phonebook entry = (Phonebook) v.getTag();
                     nPointer=entry.getPointer();
-                   // EIDH_PARAGG.remove(nPointer);
-                   // EIDH_PARAGG.remove(nPointer);
-                   // EIDH_PARAGG.remove(nPointer);
-                   // EIDH_PARAGG.remove(nPointer);
-                   // EIDH_PARAGG.remove(nPointer);
+                    // EIDH_PARAGG.remove(nPointer);
+                    // EIDH_PARAGG.remove(nPointer);
+                    // EIDH_PARAGG.remove(nPointer);
+                    // EIDH_PARAGG.remove(nPointer);
+                    // EIDH_PARAGG.remove(nPointer);
 
 
                     Toast.makeText(context,"koympi"+nPointer.toString(),Toast.LENGTH_SHORT).show();
-                 //   listPhonebook.remove(entry);
+                    //   listPhonebook.remove(entry);
 
                     ListalertDialog(nPointer);
 
 
 
 
-                //ok δουλεύει    f_sum=f_sum+parseDouble(entry.getTimh());
-                // ok δουλεύει      total_price.setText(f_sum.toString()) ;
+                    //ok δουλεύει    f_sum=f_sum+parseDouble(entry.getTimh());
+                    // ok δουλεύει      total_price.setText(f_sum.toString()) ;
 
 
                     // TextView tvMail = (TextView) order.findViewById(R.id.tvTimh);
