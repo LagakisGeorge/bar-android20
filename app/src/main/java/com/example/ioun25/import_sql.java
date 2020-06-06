@@ -41,7 +41,7 @@ public class import_sql extends AppCompatActivity {
     EditText e1;
 
     // dell οικιας .7  49702  p@ssw0rd
-    private String URL = "jdbc:jtds:sqlserver://192.168.1.3:51403/BAR;instance=SQL17;";
+    private String URL = "jdbc:jtds:sqlserver://192.168.1.4:51403/BAR;instance=SQL17;";
     private String USER = "sa";
     private String PASS = "12345678";  // fujitsu laptop
     // private String PASS = "p@ssw0rd";   // oikia
@@ -745,6 +745,11 @@ cursor2.moveToFirst() ;
                     "[TIMH] [real] ," +
                     "[KATHG] [int] ," +
                     "[PICTURE] [nvarchar](55) );");
+
+
+
+
+
             mydatabase.execSQL("CREATE TABLE IF NOT EXISTS EIDH( ID  INTEGER PRIMARY KEY,KOD [int]," +
                     "[ONO] [nvarchar](255) ," +
                     "[XAR1] [int] ," +
@@ -758,7 +763,7 @@ cursor2.moveToFirst() ;
                     "[PICTURE] [nvarchar](55) );");
 
 
-/*            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS EIDH2( ID  INTEGER PRIMARY KEY,KOD [int]," +
+            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS EIDH2( ID  INTEGER PRIMARY KEY,KOD [int]," +
                     "[ONO] [nvarchar](255) ," +
                     "[XAR1] [int] ," +
                     "[XAR2] [int] ," +
@@ -769,7 +774,7 @@ cursor2.moveToFirst() ;
                     "[TIMH] [real] ," +
                     "[KATHG] [int] ," +
                     "[PICTURE] [nvarchar](55) );");
-*/
+
             mydatabase.execSQL("DELETE FROM EIDH2");
             mydatabase.execSQL("INSERT INTO EIDH2 ( ONO,CH1,CH2,KATHG,TIMH,NUM1,NUM2) SELECT ONO,CH1,CH2,KATHG,TIMH,NUM1,NUM2 FROM EIDH;");
             mydatabase.execSQL("DROP TABLE EIDH;");
@@ -881,42 +886,7 @@ cursor2.moveToFirst() ;
 
             mydatabase.execSQL(c);
 
-<<<<<<< HEAD
             c="CREATE TABLE IF NOT EXISTS PARAGGMASTER2("+
-=======
-
-            String c="CREATE TABLE IF NOT EXISTS PARAGGMASTER2("+
-                    "[TRAPEZI] [nvarchar](55) ,"+
-                    "[IDERGAZ] [int] ,"+
-                    "[HME] [datetime] ,"+
-                    "[IDBARDIA] [int] ,"+
-                    "[AJIA] [real] ,"+
-                    "[TROPOS] [int] ,"+
-                    "[NUM1] [real] ,"+
-                    "[NUM2] [real] ,"+
-                    "[CASH] [real] ,"+
-                    "[CRED1] [real] ,"+
-                    "[CRED2] [real] ,"+
-                    "[KERAS] [real] ,"+
-                    "[CH1] [varchar](55) ,"+
-                    "[CH2] [varchar](55) ,"+
-                    "[ID] integer PRIMARY KEY )";
-
-            mydatabase.execSQL(c);
-
-
-
-            mydatabase.execSQL("DELETE FROM PARAGGMASTER2");
-            mydatabase.execSQL("INSERT INTO PARAGGMASTER2   ( TRAPEZI,IDERGAZ,HME,IDBARDIA,AJIA,TROPOS,NUM1,NUM2,CH1,CH2) SELECT TRAPEZI,IDERGAZ,HME,IDBARDIA,AJIA,TROPOS,NUM1,NUM2,CH1,CH2 FROM PARAGGMASTER;");
-            mydatabase.execSQL("DROP TABLE PARAGGMASTER;");
-            mydatabase.execSQL("ALTER TABLE PARAGGMASTER2 RENAME TO PARAGGMASTER;");
-
-
-
-
-
-         /*    c="CREATE TABLE IF NOT EXISTS PARAGGMASTER2("+
->>>>>>> 5c61fb548285bca16fb8bd04c6120d0245f98185
                     "[TRAPEZI] [nvarchar](55) ,"+
                     "[IDERGAZ] [int] ,"+
                     "[HME] [datetime] ,"+
