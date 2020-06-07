@@ -187,7 +187,7 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 String[] cTrapeziFull = TrapeziFull.split(";");
                 String idpar=cTrapeziFull[1];
 
-                Double nn=ReadSqln("select AJIA-NUM1 FROM PARAGGMASTER WHERE ID="+idpar) ;
+                Double nn=ReadSqln("select AJIA-IFNULL(NUM1,0)  FROM PARAGGMASTER WHERE ID="+idpar) ;
                 TextView ypoloipo=findViewById(R.id.ypoloipo);
                 ypoloipo.setText(Double.toString(nn));
 
@@ -484,7 +484,7 @@ public void show_meriki(){
 
 
 
-
+        String PEDIO="CASH";
         String PLIROMI="";
         Integer mp=1;
         switch (item.getItemId()) {
@@ -492,23 +492,27 @@ public void show_meriki(){
                 PLIROMI=MainActivity.mPliromes[1];
                // Toast.makeText(trapezia.this,"Clicked 1on the action", Toast.LENGTH_LONG).show();
         //        return true;
+                PEDIO="CASH";
                 mp=1;
                  break;
             }
             case R.id.two: {
                 PLIROMI=MainActivity.mPliromes[2];
+                PEDIO="POS1";
                 mp=2;
                       break;
           //      return true;
             }
             case R.id.three: {
                 PLIROMI=MainActivity.mPliromes[3];
+                PEDIO="POS2";
                 mp=3;
                 break;
             //    return true;
             }
             case R.id.four: {
                 PLIROMI=MainActivity.mPliromes[4];
+                PEDIO="KERA";
                 mp=4;
                 break;
               //  return true;
@@ -521,7 +525,7 @@ public void show_meriki(){
 
         }
 
-Payment(Long.toString(mp) ) ;
+Payment(PEDIO);  // Long.toString(mp) ) ;
         Toast.makeText(trapezia.this,PLIROMI, Toast.LENGTH_LONG).show();
 
 
@@ -593,7 +597,7 @@ Payment(Long.toString(mp) ) ;
 
   }
 
-  public void Payment(String tropos) {
+  public void Payment(String PEDIO) {
 
 
 
@@ -616,7 +620,13 @@ Payment(Long.toString(mp) ) ;
 
 
         mydatabase.execSQL("UPDATE TABLES SET KATEILHMENO=0,IDPARAGG=0 WHERE ONO='" + skTrapezi + "'");
-        mydatabase.execSQL("UPDATE PARAGGMASTER SET CH2= datetime('now','localtime'),TROPOS="+tropos+"   WHERE ID=" + idpar);
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET CH2= datetime('now','localtime'),"+PEDIO+"=IFNULL("+PEDIO+",0)+ (AJIA-IFNULL(NUM1,0) )  WHERE ID=" + idpar);
+
+
+
+
+
+
   mydatabase.close();
 
 

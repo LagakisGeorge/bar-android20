@@ -753,7 +753,11 @@ separated[1]; // this will contain " they taste good"
 
         mydatabase.execSQL("UPDATE PARAGGMASTER SET num1=num1+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
 
-        mydatabase.execSQL("UPDATE PARAGGMASTER SET "+PEDIO+"="+PEDIO+"+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET "+PEDIO+"=IFNULL("+PEDIO+",0)+"+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+
+        // mydatabase.execSQL("UPDATE PARAGGMASTER SET PIS1=PIS1+f_sum.toString()+"   WHERE ID=" + fIDPARAGG);
+
+        Toast.makeText(getApplicationContext(),"τρόπος πληρωμής"+PEDIO+" "+fIDPARAGG,Toast.LENGTH_LONG).show();
 
         Cursor cur1=mydatabase.rawQuery("select num1 from PARAGGMASTER  WHERE ID=" + fIDPARAGG,null);
         if (cur1.moveToFirst()) {
