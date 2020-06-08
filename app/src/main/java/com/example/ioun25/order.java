@@ -543,7 +543,7 @@ separated[1]; // this will contain " they taste good"
         // μερικη πληρωμή
         if (ch1.isChecked() ){
             if (position>=gYparxoyses){
-                Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΙ ΚΑΤΑΧΩΡΗΘΕΙ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Δεν έχει καταχωρηθεί ακόμη",Toast.LENGTH_LONG).show();
                 return;
             }
             int j=position-position%5; // ειναι το ιδιο με το position
@@ -553,7 +553,52 @@ separated[1]; // this will contain " they taste good"
 
             // Modify the element at a given index
             //  topCompanies.set(4, "Walmart");
-            EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+          //  EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+
+            // Modify the element at a given index
+            //  topCompanies.set(4, "Walmart");
+
+            Integer OlikiPosothta=Integer.parseInt(EIDH_PARAGG.get(j+1));
+            Toast.makeText(getApplicationContext(),"Ολική Ποσότητα "+Integer.toString(OlikiPosothta),Toast.LENGTH_LONG).show();
+
+            if (OlikiPosothta>1) {   // εχει παραπάνω από 1τεμ στην σειρά
+                // ειναι κάποιο πληρωμένο? τοτε θα γίνει +1  δηλαδη  * 1*  =>  * 2*
+
+                if( EIDH_PARAGG.get(j).substring(0,1).equals("*")) {
+                    Integer PliromeniPosothta=Integer.parseInt(EIDH_PARAGG.get(j).substring(1,2));
+                    if((OlikiPosothta-PliromeniPosothta)==1){
+                        // το κάνω ολικη πληρωμη
+                        EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+                        Toast.makeText(getApplicationContext(),"Ολική Πληρωμή υπολ.Ποσότητας "+Integer.toString(OlikiPosothta),Toast.LENGTH_LONG).show();
+                    }else{
+
+                        String NeaPliromeniPosotita ="*"+Integer.toString(PliromeniPosothta+1)+" ";
+                        EIDH_PARAGG.set(j, NeaPliromeniPosotita + EIDH_PARAGG.get(j));
+                        Toast.makeText(getApplicationContext(),"Νέα Πληρωμ.Ποσότητα "+NeaPliromeniPosotita,Toast.LENGTH_LONG).show();
+                    }
+                   /* ====================helplagakis
+                    string to Integer
+                    Integer n=Integer.parseInt(tem.getText().toString());
+
+                    integer to String
+
+                    tem.setText(Integer.toString(n+1));
+                    */
+
+
+
+                }else{ // δεν πληρωθηκε κανενα αρα το κάνω * 1*
+                    EIDH_PARAGG.set(j,"*1 "+EIDH_PARAGG.get(j));
+                }
+            }else{
+                EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+            }
+
+
+
+
+
+
             f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
             TextView meriki;
             meriki=findViewById(R.id.meriki);
@@ -732,7 +777,7 @@ separated[1]; // this will contain " they taste good"
         for(int i =0;i< gYparxoyses;i=i+5)//
         {
 
-            if(EIDH_PARAGG.get(i).substring(0,2).equals("**")){
+            if(EIDH_PARAGG.get(i).substring(0,1).equals("*")){
 
                 if(idArr[kn]>0){
                     mydatabase.execSQL("update PARAGG SET ono='"+EIDH_PARAGG.get(i)+"' WHERE ID="+idArr[kn].toString());
@@ -783,7 +828,8 @@ separated[1]; // this will contain " they taste good"
         ch1=findViewById(R.id.checkBox);
 
         // μερικη πληρωμή
-        if (ch1.isChecked() ){
+        if (ch1.isChecked() )
+        {
             if (position>=gYparxoyses){
                 Toast.makeText(getApplicationContext(),"ΔΕΝ ΕΧΕΙ ΚΑΤΑΧΩΡΗΘΕΙ ΑΚΟΜΑ",Toast.LENGTH_LONG).show();
                 return;
@@ -793,10 +839,10 @@ separated[1]; // this will contain " they taste good"
                 return;
             }
 
-            // Modify the element at a given index
-            //  topCompanies.set(4, "Walmart");
-            EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
-            f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));
+
+
+                 EIDH_PARAGG.set(j,"**"+EIDH_PARAGG.get(j));  //   +EIDH_PARAGG.get(j+4));
+            f_sum=f_sum+parseDouble(EIDH_PARAGG.get(j+2));  // prosuetei την αξία ενός τεμαχίου της σειράς
             TextView meriki;
             meriki=findViewById(R.id.meriki);
             meriki.setText(f_sum.toString());
@@ -1358,12 +1404,6 @@ separated[1]; // this will contain " they taste good"
         }
 
      */
-
-
-
-
-
-
     }
 
 

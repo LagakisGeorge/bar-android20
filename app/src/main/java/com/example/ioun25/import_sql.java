@@ -796,7 +796,7 @@ cursor2.moveToFirst() ;
 
 
 
-            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS TABLES ("+
+            mydatabase.execSQL("CREATE TABLE IF NOT EXISTS TABLES (ID  INTEGER PRIMARY KEY ,"+
                     "[ONO] [nvarchar](55) ,"+
                     "[KATEILHMENO] [int] ,"+
                     "[SYNOLO] [int] ,"+
@@ -804,8 +804,7 @@ cursor2.moveToFirst() ;
                     "[NUM2] [int] ,"+
                     "[CH1] [nvarchar](55) ,"+
                     "[CH2] [nvarchar](55),"+
-                    "[IDPARAGG] [int] ,"+
-                    "[ID]  INTEGER PRIMARY KEY);" );
+                    "[IDPARAGG] [int] );" );
 
 
             Toast.makeText(getApplicationContext(), "3.TABLES ok", Toast.LENGTH_SHORT).show();

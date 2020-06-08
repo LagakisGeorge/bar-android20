@@ -33,6 +33,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -134,10 +135,30 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             //  String[] separated2 = message.split("#");
             //  message=separated[1];
             trapezi = (TextView)findViewById(R.id.textView);
-            trapezi.setText(cTable); // o.toString());  //#52  ή  52
-            int position=this.getPosition()  ;  //position=((TextView) v).getId();
+            // trapezi.setText(cTable); // o.toString());  //#52  ή  52
 
-            TrapeziFull=cTable+";"+arrIdParagg[position];  // #52 ; 234
+
+            CheckBox ch1;
+            ch1=findViewById(R.id.checkBox2);
+
+            if (ch1.isChecked() ){
+
+                TextView Teltrapezi = (TextView)findViewById(R.id.textView4);
+                Teltrapezi.setText(cTable);
+            }else {
+                trapezi.setText(cTable); // o.toString());  //#52  ή  52
+
+                int position=this.getPosition()  ;  //position=((TextView) v).getId();
+
+                TrapeziFull=cTable+";"+arrIdParagg[position];  // #52 ; 234
+
+
+            }
+
+
+
+
+
 
            // Toast.makeText(getApplicationContext(),
             //        "You have clicked " +position+ ((TextView) v).getText(),
@@ -167,8 +188,15 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
 
 
+       Button bb3=(Button)findViewById(R.id.button);
+        bb3.setOnClickListener(new View.OnClickListener() {
+                                   @Override
+                                   public void onClick(View v) {
+                                       Metakinisi();
+                                   }
 
-
+                                   ;
+                               });
 
 
         bb=(Button)findViewById(R.id.payment);
@@ -220,18 +248,81 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
             public void onItemClick(AdapterView<?> parent, View view, int position,
                                     long id) {
                 Object o = moviesList.getItemAtPosition(position);
-                trapezi = (TextView)findViewById(R.id.textView);   // #52 /45.70
+
                 //  textView.setText(message);
                 String[] separated3 = o.toString().split("/");
                 String cTable= separated3[0];  // #52
-                TrapeziFull=cTable+";"+arrIdParagg[position];  // #52 ; 234
+
                 //  String[] separated2 = message.split("#");
                 //  message=separated[1];
-                trapezi.setText(cTable); // o.toString());  //#52  ή  52
+
+                CheckBox ch1;
+                ch1=findViewById(R.id.checkBox2);
+
+                //
+                if (ch1.isChecked() ){
+
+                    TextView Teltrapezi = (TextView)findViewById(R.id.textView4);
+                    Teltrapezi.setText(cTable);
+                }else {
+                    trapezi = (TextView)findViewById(R.id.textView);   // #52 /45.70
+                    TrapeziFull=cTable+";"+arrIdParagg[position];  // #52 ; 234
+                    trapezi.setText(cTable); // o.toString());  //#52  ή  52
+                }
+
+
             }
         });
 
         //    listTRAPEZIA();
+
+
+
+
+        CheckBox chkIos = (CheckBox) findViewById(R.id.checkBox2);
+
+        chkIos.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                //is chkIos checked?
+                if (((CheckBox) v).isChecked()) {
+                    Toast.makeText(trapezia.this,
+                            "Πιέστε το νέο τραπέζι", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(trapezia.this,
+                            ".....", Toast.LENGTH_LONG).show();
+
+                    TextView Teltrapezi = (TextView)findViewById(R.id.textView4);
+                    Teltrapezi.setText("");
+
+
+                }
+
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
 /*
@@ -566,6 +657,121 @@ Payment(PEDIO);  // Long.toString(mp) ) ;
 
 
     }
+
+
+    public void Metakinisi(){
+
+        trapezi = (TextView)findViewById(R.id.textView);
+        String skTrapezi2=trapezi.getText().toString();
+
+        if (skTrapezi2 == null || skTrapezi2.isEmpty() || skTrapezi2.equalsIgnoreCase("null")) {
+            Toast.makeText(trapezia.this,"ΔΕΝ ΔΙΑΛΕΞΑΤΕ ΑΡΧΙΚΟ τραπέζι ", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+        if (skTrapezi2.substring(0, 1).equals("#")){
+            //ok
+        } else {
+            Toast.makeText(trapezia.this,"το ΑΡΧΙΚΟ τραπέζι "+skTrapezi2+" είναι ΑΔΕΙΟ", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String ArxikoTrapezi;
+        String[] separated3 = skTrapezi2.split("#");
+        ArxikoTrapezi = separated3[1];
+
+
+
+
+
+
+        // Παίρνω το ID της αρχικής παραγγελίας για να ενημεωσω το PARAGGMASTER
+        String[] cTrapeziFull = TrapeziFull.split(";");
+        String idpar=cTrapeziFull[1];
+
+
+       // ΔΙΑΒΑΖΩ ΤΟ ΤΡΑΠΕΖΙ ΠΡΟΟΡΙΣΜΟΣ
+       TextView    trapeziNeo = (TextView)findViewById(R.id.textView4);
+       String cNeoTrapezi=trapeziNeo.getText().toString();
+        if (cNeoTrapezi == null || cNeoTrapezi.isEmpty() || cNeoTrapezi.equalsIgnoreCase("null")) {
+            Toast.makeText(trapezia.this,"ΔΕΝ ΔΙΑΛΕΞΑΤΕ ΤΕΛΙΚΟ τραπέζι ", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+      //  String[] cTrapeziFull = TrapeziFull.split(";");
+      //  String idpar=cTrapeziFull[1];
+
+
+        SQLiteDatabase mydatabase = null;
+        mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
+
+
+
+
+
+
+        // πρεπει τα στοιχεια του ενος τραπεζιου ArxikoTrapezi να τα μεταφερω στο άλλο cNeoTrapezi
+        String ArxID="0000";
+        Cursor cursor5 = mydatabase.rawQuery("select ID FROM TABLES WHERE ONO='"+ArxikoTrapezi+"'", null);
+        if (cursor5.moveToFirst()) {
+            ArxID = cursor5.getString(0);   // getDouble(0);
+        }
+        else{
+            Toast.makeText(trapezia.this,"ΑΔΥΝΑΤΗ Η ΜΕΤΑΚΙΝΗΣΗ", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        String TelID="0000";
+        Cursor cursor6 = mydatabase.rawQuery("select ID FROM TABLES WHERE ONO='"+cNeoTrapezi+"'", null);
+        if (cursor6.moveToFirst()) {
+            TelID = cursor6.getString(0);   // getDouble(0);
+        }
+        else{
+            Toast.makeText(trapezia.this,"ΑΔΥΝΑΤΗ Η ΜΕΤΑΚΙΝΗΣΗ", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+        mydatabase.execSQL("UPDATE TABLES SET ono='"+ArxikoTrapezi+"' WHERE ID=" + TelID+"" );
+
+        mydatabase.execSQL("UPDATE TABLES SET ono='"+cNeoTrapezi+"' WHERE ID=" + ArxID+"" );
+
+        // κραταω την πληρωμη σε μορφη πληρ*100 (γιατι num1 integer) για να βλεπω το υπολοιπο
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET TRAPEZI="+cNeoTrapezi+"   WHERE ID=" + idpar);
+
+
+
+
+      //  update neo
+      //  update palio  KATEILHMENO=0,CH1='',CH2='0'
+
+
+
+
+     // mydatabase.execSQL("UPDATE TABLES SET CH2='"+cPlir+"' WHERE ONO='" + skTrapezi + "'");
+
+      //Q="UPDATE TABLES SET ch2='0',CH1='" + csum + "',KATEILHMENO=1,IDPARAGG=" + s + " WHERE ONO='" + tr + "';";
+      //mydatabase.execSQL(Q);
+
+        //Double cc =SynPlir;
+
+
+
+
+
+        mydatabase.close();
+
+
+        listTRAPEZIA();
+        runRecycler();
+
+
+
+
+    }
+
 
     // call order intent
   public void Paraggelia(View view) {

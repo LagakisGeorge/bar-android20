@@ -25,6 +25,15 @@
         android:text="ΑΝΑΛ.ΠΑΡΑΓΓ" />
 
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/button18"
+        android:onClick="show_TABLES"
+        android:text="ΤΡΑΠΕΖΙΑ" />
+
+
     <GridView
         android:id="@+id/grid"
         android:layout_width="match_parent"
@@ -40,4 +49,6 @@
         tools:layout_editor_absoluteY="303dp">
 
     </GridView>
+
+
 </RelativeLayout>
