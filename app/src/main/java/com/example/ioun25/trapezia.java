@@ -589,14 +589,14 @@ public void show_meriki(){
             }
             case R.id.two: {
                 PLIROMI=MainActivity.mPliromes[2];
-                PEDIO="POS1";
+                PEDIO="PIS1";
                 mp=2;
                       break;
           //      return true;
             }
             case R.id.three: {
                 PLIROMI=MainActivity.mPliromes[3];
-                PEDIO="POS2";
+                PEDIO="PIS2";
                 mp=3;
                 break;
             //    return true;
@@ -714,9 +714,13 @@ Payment(PEDIO);  // Long.toString(mp) ) ;
 
         // πρεπει τα στοιχεια του ενος τραπεζιου ArxikoTrapezi να τα μεταφερω στο άλλο cNeoTrapezi
         String ArxID="0000";
-        Cursor cursor5 = mydatabase.rawQuery("select ID FROM TABLES WHERE ONO='"+ArxikoTrapezi+"'", null);
+        String mCH1,mCH2,mIDPARAGG;
+        Cursor cursor5 = mydatabase.rawQuery("select ifnull(ID,0) as idd,CH1,CH2,IDPARAGG FROM TABLES WHERE ONO='"+ArxikoTrapezi+"'", null);
         if (cursor5.moveToFirst()) {
             ArxID = cursor5.getString(0);   // getDouble(0);
+            mCH1 = cursor5.getString(1);
+            mCH2 = cursor5.getString(2);
+            mIDPARAGG = cursor5.getString(3);
         }
         else{
             Toast.makeText(trapezia.this,"ΑΔΥΝΑΤΗ Η ΜΕΤΑΚΙΝΗΣΗ", Toast.LENGTH_LONG).show();
@@ -724,7 +728,7 @@ Payment(PEDIO);  // Long.toString(mp) ) ;
         }
 
         String TelID="0000";
-        Cursor cursor6 = mydatabase.rawQuery("select ID FROM TABLES WHERE ONO='"+cNeoTrapezi+"'", null);
+        Cursor cursor6 = mydatabase.rawQuery("select  ifnull(ID,0) as idd FROM TABLES WHERE ONO='"+cNeoTrapezi+"'", null);
         if (cursor6.moveToFirst()) {
             TelID = cursor6.getString(0);   // getDouble(0);
         }
@@ -733,10 +737,22 @@ Payment(PEDIO);  // Long.toString(mp) ) ;
             return;
         }
 
-
+/*  πρωτος τρόπος αλλαζω το ονομα του τραπεζιου στο ιδιο ID  χοντας σαν κλειδί το ID
         mydatabase.execSQL("UPDATE TABLES SET ono='"+ArxikoTrapezi+"' WHERE ID=" + TelID+"" );
 
         mydatabase.execSQL("UPDATE TABLES SET ono='"+cNeoTrapezi+"' WHERE ID=" + ArxID+"" );
+*/
+
+// 2oς τρόπος στο τραπεζι ενημερωνω τα νεα δεδομενα εχοντας σαν κλειδί το ono
+
+        mydatabase.execSQL("UPDATE TABLES SET KATEILHMENO=1,ch1='"+mCH1+"',ch2='"+mCH2+"',idparagg="+mIDPARAGG+" where ono='"+cNeoTrapezi+"'" );
+        mydatabase.execSQL("UPDATE TABLES SET KATEILHMENO=0,ch1='',ch2='',idparagg=0 where ono='"+ArxikoTrapezi+"'" );
+
+
+
+
+
+
 
         // κραταω την πληρωμη σε μορφη πληρ*100 (γιατι num1 integer) για να βλεπω το υπολοιπο
         mydatabase.execSQL("UPDATE PARAGGMASTER SET TRAPEZI="+cNeoTrapezi+"   WHERE ID=" + idpar);
@@ -826,7 +842,7 @@ Payment(PEDIO);  // Long.toString(mp) ) ;
 
 
         mydatabase.execSQL("UPDATE TABLES SET KATEILHMENO=0,IDPARAGG=0 WHERE ONO='" + skTrapezi + "'");
-        mydatabase.execSQL("UPDATE PARAGGMASTER SET CH2= datetime('now','localtime'),"+PEDIO+"=IFNULL("+PEDIO+",0)+ (AJIA-IFNULL(NUM1,0) )  WHERE ID=" + idpar);
+        mydatabase.execSQL("UPDATE PARAGGMASTER SET CH2= datetime('now','localtime'),"+PEDIO+"=IFNULL("+PEDIO+",0)+ (IFNULL(AJIA,0)-IFNULL(NUM1,0) )  WHERE ID=" + idpar);
 
 
 

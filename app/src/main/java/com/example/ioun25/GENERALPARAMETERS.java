@@ -554,10 +554,10 @@ public class GENERALPARAMETERS extends AppCompatActivity {
         try{
             SQLiteDatabase mydatabase=null;
 
-            values.add("τραπεζι");
-            values.add("ωρα");
-            values.add("πληρωμη");
-            values.add("Αξία");
+            values.add("ΜΕΤΡ");
+            values.add("ΠΙΣΤ1");
+            values.add("ΠΙΣΤ2");
+            values.add("ΚΕΡΑΣΜ");
 
 
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
@@ -572,12 +572,16 @@ public class GENERALPARAMETERS extends AppCompatActivity {
 
 
             Double Gen=0.0;
-            Cursor cursor3 = mydatabase.rawQuery("select sum(ajia) as syn,tropos   from  PARAGGMASTER  where IDBARDIA="+MainActivity.idBardia+"  group by tropos", null);
+            Cursor cursor3 = mydatabase.rawQuery("select sum(CASH) as syn,sum(PIS1) as synp1,sum(PIS2) as synP2,sum(KERA) as synK   from  PARAGGMASTER  where IDBARDIA="+MainActivity.idBardia+"  ", null);
 
             if (cursor3.moveToFirst()) {
                 do {
 
-
+                    values.add(Double.toString(cursor3.getDouble(0)));
+                    values.add(Double.toString(cursor3.getDouble(1)));
+                    values.add(Double.toString(cursor3.getDouble(2)));
+                    values.add(Double.toString(cursor3.getDouble(3)));
+                    /*
 
                             values.add("");
                             if (cursor3.getInt(1)==0){
@@ -590,6 +594,7 @@ public class GENERALPARAMETERS extends AppCompatActivity {
 
                         values.add(Integer.toString(cursor3.getInt(1)));
                         values.add(Double.toString(cursor3.getDouble(0)));
+                      */
                         Gen=Gen+cursor3.getDouble(0);
 
 

@@ -1116,6 +1116,21 @@ separated[1]; // this will contain " they taste good"
        */
 
 
+// αν πατησει κατα λάθος αποθηκευση αντι για πληρωμή
+        CheckBox    chkIos = (CheckBox) findViewById(R.id.checkBox);
+                if (chkIos.isChecked()) {
+                    Toast.makeText(order.this,
+                            "Πιέστε ΠΛΗΡΩΜΗ", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+
+
+
+
+
+
+
 
         //-----------------------------------  sql lite save order --------------------------
         SQLiteDatabase mydatabase = null;

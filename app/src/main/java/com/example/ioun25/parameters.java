@@ -208,7 +208,7 @@ Show();
             listOfEIDOS = new ArrayList<EIDOS>();
 
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-            Cursor cursor2 = mydatabase.rawQuery("select ID,ONO,TIMH,IFNULL(CH2,'') AS CCH2,IFNULL(CH1,'') AS CCH1 ,IFNULL(num1,0) AS TIMHP  from  EIDH", null);
+            Cursor cursor2 = mydatabase.rawQuery("select ID,ONO,TIMH,IFNULL(CH2,'') AS CCH2,IFNULL(CH1,'') AS CCH1 ,IFNULL(num1,0) AS TIMHP  from  EIDH ORDER BY ID DESC", null);
             String kat="";
             String syn="";
             if (cursor2.moveToFirst()) {
@@ -218,10 +218,10 @@ Show();
             }
             mydatabase.close();
 
+            parameters.EIDHadapter adapter = new parameters.EIDHadapter(parameters.this, listOfEIDOS);
 
-
-
-
+            ListView list = (ListView) findViewById(R.id.listEIDH);
+            list.setAdapter(adapter);
 
 
 

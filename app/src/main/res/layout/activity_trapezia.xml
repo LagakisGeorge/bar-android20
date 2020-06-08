@@ -93,28 +93,29 @@
         android:layout_marginTop="4dp"
         android:layout_toRightOf="@+id/textView"
 
-        android:text="Μετακ.σε " />
+        android:text="ΜΕΤΑΚΙΝΗΣΗ" />
 
-    <TextView
-        android:id="@+id/textView4"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/checkBox2"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="4dp"
 
-        android:background="#858463"
-        android:text="  " />
 
     <CheckBox
         android:id="@+id/checkBox2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/button19"
-        android:layout_alignParentLeft="true"
-        android:layout_marginTop="4dp"
 
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/button"
         android:text="Σε Νέο" />
 
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button19"
+
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/checkBox2"
+        android:background="#FFEB3B"
+        android:text="  " />
 
 </RelativeLayout>

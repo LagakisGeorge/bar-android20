@@ -67,15 +67,16 @@ public class reports2 extends AppCompatActivity {
             values.add("ΠΙΣΤ2");
             values.add("ΚΕΡΑΣΜ");
             values.add("ID ΠΑΡΑΓΓ");
+            values.add("ch1");
 
 
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-            Cursor cursor2 = mydatabase.rawQuery("select TRAPEZI,SUBSTR(ch2,11,6),ajia,IFNULL(CASH,0) AS METR,IFNULL(PIS1,0) AS PISTOT1,IFNULL(PIS2,0) AS PIST2,IFNULL(KERA,0) AS KERASM,id  from  PARAGGMASTER", null);
+            Cursor cursor2 = mydatabase.rawQuery("select TRAPEZI,SUBSTR(ch2,11,6),ajia,IFNULL(CASH,0) AS METR,IFNULL(PIS1,0) AS PISTOT1,IFNULL(PIS2,0) AS PIST2,IFNULL(KERA,0) AS KERASM,id ,ch1 from  PARAGGMASTER", null);
 
             if (cursor2.moveToFirst()) {
                 do {
 
-                    for(int i = 0; i<8;i++)  {
+                    for(int i = 0; i<9;i++)  {
 
                         //    int index = c.getColumnIndex("description");
                         String str = cursor2.getString(i);
@@ -186,16 +187,17 @@ public class reports2 extends AppCompatActivity {
             values.add("NUM1");
             values.add("NUM2");
             values.add("CH1");
+            values.add("CH2");
             values.add("ID ΠΑΡΑΓΓ");
 
 
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-            Cursor cursor2 = mydatabase.rawQuery("select ONO,ID,KATEILHMENO,SYNOLO,NUM1,NUM2,CH1,IDPARAGG from  TABLES", null);
+            Cursor cursor2 = mydatabase.rawQuery("select ONO,ID,KATEILHMENO,SYNOLO,NUM1,NUM2,CH1,ch2,IDPARAGG from  TABLES", null);
 
             if (cursor2.moveToFirst()) {
                 do {
 
-                    for(int i = 0; i<8;i++)  {
+                    for(int i = 0; i<9;i++)  {
 
                         //    int index = c.getColumnIndex("description");
                         String str = cursor2.getString(i);
@@ -319,13 +321,18 @@ public class reports2 extends AppCompatActivity {
             values.add("ΠΟΣΟΤΗΤΑ");
             values.add("ΤΙΜΗ");
             values.add("ID ΠΑΡΑΓΓ");
+            values.add("ch1");
+            values.add("ch2");
+            values.add("num1");
+            values.add("num2");
+
             mydatabase = openOrCreateDatabase("eidh",MODE_PRIVATE,null);
-            Cursor cursor2 = mydatabase.rawQuery("select ono,prosueta,poso,timh,idparagg from  PARAGG order by idparagg desc", null);
+            Cursor cursor2 = mydatabase.rawQuery("select ono,prosueta,poso,timh,idparagg,ch1,ch2,num1,num2 from  PARAGG order by idparagg desc", null);
 
             if (cursor2.moveToFirst()) {
                 do {
 
-                    for(int i = 0; i<5;i++)  {
+                    for(int i = 0; i<9;i++)  {
 
                         //    int index = c.getColumnIndex("description");
                         String str = cursor2.getString(i);
